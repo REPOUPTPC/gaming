@@ -1,0 +1,763 @@
+/* ==========================================================================
+   MODAL DE INSCRIPCIÓN GAMING - ESTILOS FUTURISTAS & RESPONSIVOS
+   ========================================================================== */
+
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(3, 6, 16, 0.88);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+  opacity: 0;
+  visibility: hidden;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.modal-overlay.active {
+  opacity: 1;
+  visibility: visible;
+}
+
+.modal-dialog {
+  width: 100%;
+  max-width: 720px;
+  max-height: 92vh;
+  background: linear-gradient(145deg, #091124 0%, #0d1738 100%);
+  border: 1px solid rgba(0, 243, 255, 0.4);
+  border-radius: var(--radius-lg);
+  box-shadow: 0 0 50px rgba(0, 243, 255, 0.25), 0 20px 40px rgba(0, 0, 0, 0.8);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  transform: translateY(20px) scale(0.97);
+  transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  position: relative;
+}
+
+.modal-overlay.active .modal-dialog {
+  transform: translateY(0) scale(1);
+}
+
+/* Efecto de borde superior neón */
+.modal-dialog::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 4px;
+  background: linear-gradient(90deg, var(--neon-cyan), var(--neon-pink), var(--neon-cyan));
+  box-shadow: 0 0 15px var(--neon-cyan);
+}
+
+/* Header del modal */
+.modal-header {
+  padding: 22px 28px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px solid rgba(0, 243, 255, 0.15);
+  background: rgba(6, 12, 28, 0.6);
+}
+
+.modal-title-group {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.modal-icon {
+  font-size: 1.6rem;
+  filter: drop-shadow(0 0 8px var(--neon-cyan));
+}
+
+.modal-title {
+  font-family: var(--font-heading);
+  font-size: 1.25rem;
+  color: #ffffff;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  font-weight: 800;
+}
+
+.modal-title span {
+  color: var(--neon-cyan);
+}
+
+.btn-modal-close {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  color: #ffffff;
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.2rem;
+  cursor: pointer;
+  transition: var(--transition);
+}
+
+.btn-modal-close:hover {
+  background: var(--neon-pink);
+  border-color: var(--neon-pink);
+  box-shadow: 0 0 15px var(--neon-pink-glow);
+  transform: rotate(90deg);
+}
+
+/* Cuerpo del modal con scroll suave */
+.modal-body {
+  padding: 24px 28px;
+  overflow-y: auto;
+  flex-grow: 1;
+  scrollbar-width: thin;
+  scrollbar-color: var(--neon-cyan) #091124;
+}
+
+.modal-body::-webkit-scrollbar {
+  width: 6px;
+}
+
+.modal-body::-webkit-scrollbar-thumb {
+  background: var(--neon-cyan);
+  border-radius: 4px;
+}
+
+/* Secciones dentro del formulario */
+.form-section {
+  margin-bottom: 28px;
+}
+
+.form-section-title {
+  font-family: var(--font-heading);
+  font-size: 0.95rem;
+  color: var(--neon-cyan);
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  margin-bottom: 16px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.form-section-title::after {
+  content: "";
+  flex-grow: 1;
+  height: 1px;
+  background: linear-gradient(90deg, rgba(0, 243, 255, 0.4), transparent);
+}
+
+/* Grilla de inputs */
+.form-row {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 16px;
+  margin-bottom: 16px;
+}
+
+.form-row.full {
+  grid-template-columns: 1fr;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+}
+
+.form-label {
+  font-family: var(--font-subheading);
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--text-secondary);
+  margin-bottom: 6px;
+  letter-spacing: 0.5px;
+}
+
+.form-label span.req {
+  color: var(--neon-pink);
+  margin-left: 3px;
+}
+
+/* Inputs estilizados Cyber */
+.cyber-input, .cyber-select {
+  width: 100%;
+  padding: 12px 14px;
+  background: rgba(5, 10, 24, 0.8);
+  border: 1px solid rgba(0, 243, 255, 0.3);
+  border-radius: var(--radius-sm);
+  color: #ffffff;
+  font-family: var(--font-body);
+  font-size: 1rem;
+  transition: var(--transition);
+  outline: none;
+}
+
+.cyber-input:focus, .cyber-select:focus {
+  border-color: var(--neon-cyan);
+  box-shadow: 0 0 15px var(--neon-cyan-glow);
+  background: rgba(8, 16, 36, 0.95);
+}
+
+.cyber-select {
+  cursor: pointer;
+}
+
+.cyber-select option {
+  background: #091124;
+  color: #ffffff;
+}
+
+/* Input Cédula con Prefijo V / E */
+.cedula-input-group {
+  display: flex;
+  gap: 8px;
+}
+
+.cedula-prefix {
+  width: 75px;
+  flex-shrink: 0;
+}
+
+/* ==========================================================================
+   SELECTOR DE AVATAR GAMING (10 OPCIONES)
+   ========================================================================== */
+
+.avatar-selector-grid {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 12px;
+  margin-top: 8px;
+}
+
+.avatar-option-card {
+  position: relative;
+  background: rgba(5, 10, 24, 0.7);
+  border: 2px solid rgba(255, 255, 255, 0.1);
+  border-radius: var(--radius-sm);
+  padding: 10px 6px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  cursor: pointer;
+  transition: var(--transition);
+  user-select: none;
+}
+
+.avatar-option-card:hover {
+  border-color: var(--neon-cyan);
+  transform: translateY(-3px);
+  box-shadow: 0 0 15px rgba(0, 243, 255, 0.3);
+}
+
+.avatar-option-card.selected {
+  border-color: var(--neon-cyan);
+  background: rgba(0, 243, 255, 0.15);
+  box-shadow: 0 0 20px var(--neon-cyan-glow);
+}
+
+.avatar-svg-container {
+  width: 46px;
+  height: 46px;
+  margin-bottom: 6px;
+}
+
+.avatar-svg-container svg {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+.avatar-option-name {
+  font-family: var(--font-subheading);
+  font-size: 0.72rem;
+  color: #e2e8f0;
+  text-align: center;
+  font-weight: 700;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 100%;
+}
+
+.avatar-option-card.selected .avatar-option-name {
+  color: var(--neon-cyan);
+}
+
+.avatar-check-badge {
+  position: absolute;
+  top: 4px;
+  right: 4px;
+  width: 16px;
+  height: 16px;
+  background: var(--neon-cyan);
+  color: #050814;
+  border-radius: 50%;
+  font-size: 10px;
+  font-weight: 900;
+  display: none;
+  align-items: center;
+  justify-content: center;
+}
+
+.avatar-option-card.selected .avatar-check-badge {
+  display: flex;
+}
+
+/* ==========================================================================
+   SELECTOR DE JUEGO (RADIO CARDS)
+   ========================================================================== */
+
+.game-select-cards {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+  margin-bottom: 20px;
+}
+
+.game-radio-card {
+  position: relative;
+  background: rgba(5, 10, 24, 0.7);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: var(--radius-sm);
+  padding: 14px 10px;
+  text-align: center;
+  cursor: pointer;
+  transition: var(--transition);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.game-radio-card:hover {
+  transform: translateY(-2px);
+  border-color: rgba(0, 243, 255, 0.5);
+}
+
+.game-radio-card.selected {
+  border-color: var(--neon-cyan);
+  background: rgba(0, 243, 255, 0.12);
+  box-shadow: 0 0 18px var(--neon-cyan-glow);
+}
+
+.game-radio-card.combo.selected {
+  border-color: var(--neon-pink);
+  background: rgba(255, 0, 127, 0.12);
+  box-shadow: 0 0 20px var(--neon-pink-glow);
+}
+
+.game-radio-title {
+  font-family: var(--font-heading);
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: #ffffff;
+  margin-bottom: 6px;
+}
+
+.game-radio-price {
+  font-family: var(--font-heading);
+  font-size: 1.3rem;
+  font-weight: 900;
+  color: var(--neon-cyan);
+}
+
+.game-radio-card.combo .game-radio-price {
+  color: var(--neon-gold);
+}
+
+.combo-popular-badge {
+  position: absolute;
+  top: -8px;
+  right: 6px;
+  background: var(--neon-pink);
+  color: #ffffff;
+  font-size: 0.65rem;
+  font-family: var(--font-subheading);
+  font-weight: 800;
+  padding: 2px 6px;
+  border-radius: 10px;
+  letter-spacing: 0.5px;
+}
+
+/* ==========================================================================
+   SELECTOR DE NIVEL GAMING (1 AL 10)
+   ========================================================================== */
+
+.level-picker-box {
+  background: rgba(0, 0, 0, 0.35);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: var(--radius-sm);
+  padding: 16px;
+  margin-bottom: 10px;
+}
+
+.level-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+}
+
+.level-badge-display {
+  padding: 4px 14px;
+  background: var(--neon-cyan);
+  color: #050814;
+  font-family: var(--font-heading);
+  font-size: 0.85rem;
+  font-weight: 900;
+  border-radius: 20px;
+  box-shadow: 0 0 10px var(--neon-cyan-glow);
+}
+
+.cyber-slider {
+  width: 100%;
+  height: 8px;
+  border-radius: 5px;
+  background: #0f1c3f;
+  outline: none;
+  -webkit-appearance: none;
+  cursor: pointer;
+}
+
+.cyber-slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: var(--neon-cyan);
+  box-shadow: 0 0 15px var(--neon-cyan);
+  cursor: pointer;
+  border: 2px solid #ffffff;
+  transition: transform 0.15s ease;
+}
+
+.cyber-slider::-webkit-slider-thumb:hover {
+  transform: scale(1.2);
+}
+
+.level-ticks {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 8px;
+  font-family: var(--font-subheading);
+  font-size: 0.75rem;
+  color: var(--text-muted);
+}
+
+/* ==========================================================================
+   RESUMEN DE PAGO & DROPZONE DEL COMPROBANTE
+   ========================================================================== */
+
+.payment-summary-box {
+  background: rgba(0, 243, 255, 0.06);
+  border: 1px solid rgba(0, 243, 255, 0.3);
+  border-radius: var(--radius-sm);
+  padding: 14px 18px;
+  margin-bottom: 18px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.summary-usd {
+  font-family: var(--font-heading);
+  font-size: 1.1rem;
+  color: #ffffff;
+}
+
+.summary-usd strong {
+  color: var(--neon-cyan);
+}
+
+.summary-bs {
+  font-family: var(--font-heading);
+  font-size: 1.15rem;
+  color: var(--neon-gold);
+}
+
+/* Dropzone de Capture */
+.capture-dropzone {
+  border: 2px dashed rgba(0, 243, 255, 0.4);
+  border-radius: var(--radius-md);
+  padding: 22px 15px;
+  text-align: center;
+  background: rgba(5, 10, 24, 0.5);
+  cursor: pointer;
+  transition: var(--transition);
+  position: relative;
+}
+
+.capture-dropzone:hover, .capture-dropzone.dragover {
+  border-color: var(--neon-cyan);
+  background: rgba(0, 243, 255, 0.08);
+  box-shadow: 0 0 20px rgba(0, 243, 255, 0.2);
+}
+
+.dropzone-icon {
+  font-size: 2.2rem;
+  color: var(--neon-cyan);
+  margin-bottom: 8px;
+}
+
+.dropzone-text {
+  font-family: var(--font-subheading);
+  font-size: 0.95rem;
+  color: #cbd5e1;
+  margin-bottom: 4px;
+}
+
+.dropzone-subtext {
+  font-family: var(--font-subheading);
+  font-size: 0.78rem;
+  color: var(--text-muted);
+}
+
+.capture-preview-box {
+  display: none;
+  align-items: center;
+  gap: 15px;
+  background: rgba(8, 16, 36, 0.9);
+  border: 1px solid rgba(0, 243, 255, 0.4);
+  border-radius: var(--radius-sm);
+  padding: 10px 14px;
+  margin-top: 10px;
+}
+
+.preview-thumb {
+  width: 52px;
+  height: 52px;
+  object-fit: cover;
+  border-radius: 6px;
+  border: 1px solid var(--neon-cyan);
+}
+
+.preview-meta {
+  flex-grow: 1;
+  overflow: hidden;
+}
+
+.preview-name {
+  font-family: var(--font-subheading);
+  font-size: 0.85rem;
+  color: #ffffff;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.preview-size {
+  font-family: var(--font-subheading);
+  font-size: 0.75rem;
+  color: var(--text-muted);
+}
+
+.btn-remove-capture {
+  background: none;
+  border: none;
+  color: var(--neon-pink);
+  font-size: 1.2rem;
+  cursor: pointer;
+  padding: 6px;
+  transition: var(--transition);
+}
+
+.btn-remove-capture:hover {
+  transform: scale(1.2);
+}
+
+/* ==========================================================================
+   FOOTER DEL MODAL Y ACCIONES
+   ========================================================================== */
+
+.modal-footer {
+  padding: 18px 28px;
+  background: rgba(6, 12, 28, 0.8);
+  border-top: 1px solid rgba(0, 243, 255, 0.15);
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+}
+
+.btn-modal-cancel {
+  padding: 12px 24px;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  color: #cbd5e1;
+  border-radius: 30px;
+  font-family: var(--font-heading);
+  font-size: 0.85rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: var(--transition);
+}
+
+.btn-modal-cancel:hover {
+  background: rgba(255, 255, 255, 0.12);
+  color: #ffffff;
+}
+
+.btn-modal-submit {
+  padding: 12px 32px;
+  background: linear-gradient(135deg, var(--neon-cyan) 0%, #0088ff 100%);
+  border: none;
+  color: #030814;
+  border-radius: 30px;
+  font-family: var(--font-heading);
+  font-size: 0.95rem;
+  font-weight: 900;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  cursor: pointer;
+  box-shadow: 0 0 20px var(--neon-cyan-glow);
+  transition: var(--transition);
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.btn-modal-submit:hover:not(:disabled) {
+  transform: scale(1.03);
+  box-shadow: 0 0 30px var(--neon-cyan);
+}
+
+.btn-modal-submit:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* Spinner de carga */
+.spinner-loader {
+  display: none;
+  width: 18px;
+  height: 18px;
+  border: 2px solid rgba(3, 8, 20, 0.3);
+  border-top-color: #030814;
+  border-radius: 50%;
+  animation: spin 0.8s infinite linear;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+/* ==========================================================================
+   PANTALLA DE ÉXITO TRAS REGISTRO
+   ========================================================================== */
+
+.modal-success-view {
+  display: none;
+  text-align: center;
+  padding: 40px 20px;
+}
+
+.success-badge-icon {
+  width: 80px;
+  height: 80px;
+  margin: 0 auto 20px;
+  background: rgba(0, 243, 255, 0.15);
+  border: 2px solid var(--neon-cyan);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 2.5rem;
+  color: var(--neon-cyan);
+  box-shadow: 0 0 30px var(--neon-cyan-glow);
+  animation: scale-up 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+@keyframes scale-up {
+  0% { transform: scale(0.5); opacity: 0; }
+  100% { transform: scale(1); opacity: 1; }
+}
+
+.success-title {
+  font-family: var(--font-heading);
+  font-size: 1.8rem;
+  color: #ffffff;
+  margin-bottom: 10px;
+}
+
+.success-subtitle {
+  font-family: var(--font-subheading);
+  font-size: 1.1rem;
+  color: var(--neon-cyan);
+  margin-bottom: 25px;
+}
+
+.success-ticket {
+  background: rgba(5, 10, 24, 0.8);
+  border: 1px solid rgba(0, 243, 255, 0.3);
+  border-radius: var(--radius-md);
+  padding: 20px;
+  max-width: 420px;
+  margin: 0 auto 30px;
+  text-align: left;
+}
+
+.ticket-item {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 10px;
+  font-family: var(--font-subheading);
+  font-size: 0.9rem;
+}
+
+.ticket-item:last-child {
+  margin-bottom: 0;
+}
+
+.ticket-label {
+  color: var(--text-secondary);
+}
+
+.ticket-val {
+  color: #ffffff;
+  font-weight: 700;
+  font-family: var(--font-heading);
+}
+
+/* Responsive Modal */
+@media (max-width: 640px) {
+  .modal-dialog {
+    max-height: 96vh;
+    border-radius: var(--radius-md);
+  }
+  
+  .modal-header, .modal-body, .modal-footer {
+    padding: 16px 18px;
+  }
+  
+  .form-row {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+  
+  .avatar-selector-grid {
+    grid-template-columns: repeat(4, 1fr);
+  }
+  
+  .game-select-cards {
+    grid-template-columns: 1fr;
+  }
+  
+  .modal-footer {
+    flex-direction: column-reverse;
+  }
+  
+  .btn-modal-cancel, .btn-modal-submit {
+    width: 100%;
+    justify-content: center;
+  }
+}

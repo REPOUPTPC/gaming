@@ -1,0 +1,553 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>¡Olimpiada de Gaming UPTPC! - Consolas PS5 | FIFA 2026 & Mortal Kombat</title>
+  <meta name="description" content="Plataforma oficial de inscripción para la Olimpiada de Gaming UPTPC en Consolas PS5 (FIFA 2026 y Mortal Kombat). Organizado por la Unidad de Ciencia y Tecnología de la UPTPC.">
+  
+  <!-- Favicon -->
+  <link rel="icon" type="image/svg+xml" href="img/favicon.svg">
+
+  <!-- Google Fonts: Orbitron, Chakra Petch y Rajdhani -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@500;600;700&family=Orbitron:wght@600;700;800;900&family=Rajdhani:wght@500;600;700&display=swap" rel="stylesheet">
+
+  <!-- Estilos CSS -->
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/modal.css">
+</head>
+<body>
+
+  <!-- ========================================================================
+       BARRA DE NAVEGACIÓN Y HEADER INSTITUCIONAL
+       ======================================================================== -->
+  <header class="site-navbar">
+    <div class="container navbar-container">
+      <div class="nav-logos">
+        <a href="#" class="logo-badge" title="Unidad de Ciencia y Tecnología">
+          <img src="img/CYT.png" alt="Logo CYT UPTPC" class="logo-img">
+        </a>
+        <a href="#" class="logo-badge" title="Universidad Politécnica Territorial de Puerto Cabello">
+          <img src="img/LOGO_UPTPC.png" alt="Logo UPTPC" class="logo-img">
+        </a>
+        <div class="nav-titles">
+          <span class="institution-title">UPTPC Puerto Cabello</span>
+          <span class="unit-subtitle">Unidad de Ciencia y Tecnología</span>
+        </div>
+      </div>
+
+      <div class="nav-actions">
+        <!-- Widget Tasa Oficial BCV / DolarAPI -->
+        <div class="dolar-ticker" title="Tasa Oficial del Dólar (BCV)">
+          <span class="live-pulse"></span>
+          <span class="dolar-label">BCV Oficial:</span>
+          <span class="dolar-value" id="nav_dolar_value">Cargando...</span>
+        </div>
+
+        <button class="btn-nav-inscripcion" data-open-modal="inscripcion">
+          ⚡ Inscribirse
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- ========================================================================
+       HERO SECTION
+       ======================================================================== -->
+  <section class="hero-section">
+    <div class="container">
+      <!-- Badges de la competición -->
+      <div class="hero-badges-wrapper">
+        <span class="badge-event">
+          🔥 1RA EDICIÓN 2026
+        </span>
+        <span class="badge-ps5">
+          🎮 CONSOLAS PS5 🎮
+        </span>
+      </div>
+
+      <!-- Título de impacto Neón -->
+      <h1 class="hero-main-title">
+        <span class="title-glow">¡OLIMPIADA DE</span>
+        <span class="title-subline">GAMING UPTPC!</span>
+      </h1>
+
+      <p class="hero-tagline">
+        ¡Ven a competir en <strong>FIFA 2026</strong> y demuestra tu habilidad en <strong>MORTAL KOMBAT</strong>! 
+        El torneo universitario gaming más grande de Puerto Cabello.
+      </p>
+
+      <!-- Banner de ubicación del Afiche -->
+      <div class="hero-location-banner">
+        <span class="location-icon">📍</span>
+        <span class="venue-text">LUGAR:</span>
+        <span class="venue-name">UNIDAD DE CIENCIA Y TECNOLOGÍA (UPTPC)</span>
+      </div>
+
+      <!-- Botón Gigante y Llamativo de Inscripción -->
+      <div class="hero-cta-wrapper">
+        <button class="btn-cta-giant" data-open-modal="inscripcion">
+          <span class="btn-icon-pulse">⚡</span>
+          <span>¡INSCRIBIRSE AHORA!</span>
+          <span class="btn-icon-pulse">🎮</span>
+        </button>
+        <p class="cta-subtext">
+          Cupos limitados • Modalidad individual o combo dúo • <span>¡Únete a la Batalla!</span>
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========================================================================
+       SECCIÓN DE JUEGOS Y MODALIDADES DISPONIBLES
+       ======================================================================== -->
+  <section class="games-section" id="juegos">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-tag">Torneo Oficial en Consolas PS5</span>
+        <h2 class="section-title">Elige tu <span>Arena de Combate</span></h2>
+      </div>
+
+      <div class="games-grid">
+        <!-- Tarjeta FIFA 2026 -->
+        <article class="game-card fifa">
+          <div>
+            <div class="game-badge-header">
+              <span class="game-category-tag">⚽ Fútbol & Deportes</span>
+              <div class="game-price-tag">
+                <span class="price-currency">$</span>
+                <span class="price-amount">5</span>
+              </div>
+            </div>
+            <h3 class="game-title">FIFA 2026</h3>
+            <p class="game-desc">
+              Domina la cancha virtual con la última entrega de simulación futbolística en PlayStation 5.
+            </p>
+            <ul class="game-features">
+              <li>
+                <svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>
+                Partidos 1 vs 1 eliminación directa
+              </li>
+              <li>
+                <svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>
+                Controles inalámbricos DualSense PS5
+              </li>
+              <li>
+                <svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>
+                Premios y reconocimiento al Campeón
+              </li>
+            </ul>
+          </div>
+          <div>
+            <div class="price-bs-calculated">
+              Tasa Oficial: <strong id="fifa_price_bs">Cargando...</strong>
+            </div>
+            <button class="btn-card-register" data-open-modal="inscripcion" data-game-id="2">
+              Inscribirme en FIFA 2026
+            </button>
+          </div>
+        </article>
+
+        <!-- Tarjeta MORTAL KOMBAT -->
+        <article class="game-card mortal">
+          <div>
+            <div class="game-badge-header">
+              <span class="game-category-tag">🥊 Peleas & Kombate</span>
+              <div class="game-price-tag">
+                <span class="price-currency">$</span>
+                <span class="price-amount">5</span>
+              </div>
+            </div>
+            <h3 class="game-title">MORTAL KOMBAT</h3>
+            <p class="game-desc">
+              Ejecuta combos devastadores, fatalities brutales y conviértete en el luchador supremo del torneo.
+            </p>
+            <ul class="game-features">
+              <li>
+                <svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>
+                Rondas al mejor de 3 (Best of 3)
+              </li>
+              <li>
+                <svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>
+                Gráficos a 60 FPS en pantalla de alta definición
+              </li>
+              <li>
+                <svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>
+                Trofeo y medalla al Rey del Kombate
+              </li>
+            </ul>
+          </div>
+          <div>
+            <div class="price-bs-calculated">
+              Tasa Oficial: <strong id="mortal_price_bs">Cargando...</strong>
+            </div>
+            <button class="btn-card-register" data-open-modal="inscripcion" data-game-id="3">
+              Inscribirme en Mortal Kombat
+            </button>
+          </div>
+        </article>
+
+        <!-- Tarjeta Combo Ambos Juegos -->
+        <article class="game-card combo">
+          <div>
+            <div class="game-badge-header">
+              <span class="game-category-tag">🔥 COMBO DÚO MAESTRO</span>
+              <div class="game-price-tag">
+                <span class="price-currency">$</span>
+                <span class="price-amount">10</span>
+              </div>
+            </div>
+            <h3 class="game-title">FIFA 2026 Y MORTAL KOMBAT</h3>
+            <p class="game-desc">
+              ¡El desafío total para verdaderos gamers! Participa simultáneamente en ambos torneos y compite por doble premiación.
+            </p>
+          </div>
+          <div>
+            <div class="price-bs-calculated">
+              Inversión total en Bolívares (Tasa Oficial): <strong id="combo_price_bs">Cargando...</strong>
+            </div>
+            <button class="btn-card-register" data-open-modal="inscripcion" data-game-id="1">
+              ⚡ Inscribirme en Ambos Torneos ($10)
+            </button>
+          </div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========================================================================
+       SECCIÓN DE INFORMACIÓN DE PAGO OFICIAL UPTPC
+       ======================================================================== -->
+  <section class="payment-info-section" id="pago">
+    <div class="container">
+      <div class="payment-card-cyber">
+        <div class="payment-card-header">
+          <h3 class="payment-card-title">
+            <svg viewBox="0 0 24 24"><path d="M21 18v1c0 1.1-.9 2-2 2H5c-1.11 0-2-.9-2-2V5c0-1.1.89-2 2-2h14c1.1 0 2 .9 2 2v1h-9c-1.11 0-2 .9-2 2v8c0 1.1.89 2 2 2h9zm-9-2h10V8H12v8zm4-2.5c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5 1.5.67 1.5 1.5-.67 1.5-1.5 1.5z"/></svg>
+            Datos Bancarios Oficiales para Transferencias
+          </h3>
+          <div class="payment-bcv-badge">
+            <span>🏛️</span>
+            <span id="bcv_rate_display">Calculado a Tasa Oficial BCV</span>
+          </div>
+        </div>
+
+        <div class="payment-details-grid">
+          <div class="payment-detail-item">
+            <span class="detail-label">Beneficiario</span>
+            <span class="detail-value">Universidad Politécnica Territorial de Puerto Cabello</span>
+          </div>
+          <div class="payment-detail-item">
+            <span class="detail-label">RIF Institucional</span>
+            <span class="detail-value">G-20005608-8</span>
+          </div>
+          <div class="payment-detail-item">
+            <span class="detail-label">Banco Receptor</span>
+            <span class="detail-value">Banco de Venezuela</span>
+          </div>
+          <div class="payment-detail-item">
+            <span class="detail-label">Cuenta Corriente</span>
+            <span class="detail-value account-num">01020317120000201359</span>
+          </div>
+        </div>
+
+        <div class="payment-actions-bar">
+          <button class="btn-copy-account" id="btn_copy_bank_info">
+            📋 Copiar Datos Bancarios
+          </button>
+          <div class="payment-notice-text">
+            <strong>Recuerda:</strong> Conserva tu número de referencia y comprobante (capture) para adjuntarlo en el formulario de inscripción.
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========================================================================
+       LISTAS DE PARTICIPANTES EN VIVO (INDEX)
+       ======================================================================== -->
+  <section class="participants-section" id="participantes">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-tag">Registro Oficial en Vivo</span>
+        <h2 class="section-title">Lista de <span>Jugadores Inscriptos</span></h2>
+      </div>
+
+      <!-- Pestañas para FIFA y Mortal Kombat -->
+      <div class="roster-tabs">
+        <button class="tab-btn active fifa" id="tab_fifa">
+          <span>⚽ FIFA 2026</span>
+          <span class="tab-badge-count" id="count_fifa">0</span>
+        </button>
+        <button class="tab-btn" id="tab_mortal">
+          <span>🥊 MORTAL KOMBAT</span>
+          <span class="tab-badge-count" id="count_mortal">0</span>
+        </button>
+      </div>
+
+      <!-- Contenedor Lista FIFA 2026 -->
+      <div class="roster-content active" id="roster_fifa_content">
+        <div class="players-grid" id="fifa_players_grid">
+          <!-- Renderizado dinámicamente con JS -->
+        </div>
+      </div>
+
+      <!-- Contenedor Lista MORTAL KOMBAT -->
+      <div class="roster-content" id="roster_mortal_content">
+        <div class="players-grid" id="mortal_players_grid">
+          <!-- Renderizado dinámicamente con JS -->
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========================================================================
+       FOOTER INSTITUCIONAL
+       ======================================================================== -->
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-content">
+        <div class="footer-branding">
+          <img src="img/CYT.png" alt="Ciencia y Tecnología UPTPC" class="footer-logo">
+          <img src="img/LOGO_UPTPC.png" alt="Universidad Politécnica Territorial de Puerto Cabello" class="footer-logo">
+          <div class="footer-text-col">
+            <h4>Olimpiada de Gaming UPTPC 2026</h4>
+            <p>Organizado por la Unidad de Ciencia y Tecnología</p>
+          </div>
+        </div>
+
+        <div class="footer-allies">
+          <span class="ally-badge">🏛️ Min. Educación Universitaria</span>
+          <span class="ally-badge">🔬 Min. Ciencia y Tecnología</span>
+          <span class="ally-badge">⭐ Fundacite Carabobo</span>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        <p>&copy; 2026 Universidad Politécnica Territorial de Puerto Cabello (UPTPC). Todos los derechos reservados.</p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- ========================================================================
+       MODAL DINÁMICO DE INSCRIPCIÓN
+       ======================================================================== -->
+  <div class="modal-overlay" id="modal_inscripcion" role="dialog" aria-modal="true" aria-labelledby="modal_title">
+    <div class="modal-dialog">
+      <!-- Encabezado del Modal -->
+      <div class="modal-header">
+        <div class="modal-title-group">
+          <span class="modal-icon">🎮</span>
+          <h3 class="modal-title" id="modal_title">Inscripción <span>Olimpiada Gaming</span></h3>
+        </div>
+        <button class="btn-modal-close" id="btn_close_modal" aria-label="Cerrar modal">&times;</button>
+      </div>
+
+      <!-- Cuerpo del Modal: Formulario -->
+      <div class="modal-body">
+        <div id="modal_form_view">
+          <form id="form_inscripcion" autocomplete="off">
+            
+            <!-- 1. Datos Personales & Gamer -->
+            <div class="form-section">
+              <h4 class="form-section-title">1. Datos del Participante</h4>
+              
+              <div class="form-row">
+                <div class="form-group">
+                  <label class="form-label" for="cedula_numero">Cédula de Identidad<span class="req">*</span></label>
+                  <div class="cedula-input-group">
+                    <select id="cedula_prefix" class="cyber-select cedula-prefix">
+                      <option value="V">V-</option>
+                      <option value="E">E-</option>
+                    </select>
+                    <input type="text" id="cedula_numero" class="cyber-input" placeholder="Ej: 28123456" required pattern="[0-9]{6,9}">
+                  </div>
+                </div>
+
+                <div class="form-group">
+                  <label class="form-label" for="nombre_completo">Nombre y Apellido<span class="req">*</span></label>
+                  <input type="text" id="nombre_completo" class="cyber-input" placeholder="Ej: Juan Pérez" required>
+                </div>
+              </div>
+
+              <div class="form-row">
+                <div class="form-group">
+                  <label class="form-label" for="correo_electronico">Correo Electrónico<span class="req">*</span></label>
+                  <input type="email" id="correo_electronico" class="cyber-input" placeholder="ejemplo@correo.com" required>
+                </div>
+
+                <div class="form-group">
+                  <label class="form-label" for="telefono_contacto">Teléfono WhatsApp<span class="req">*</span></label>
+                  <input type="tel" id="telefono_contacto" class="cyber-input" placeholder="0414-1234567" required>
+                </div>
+              </div>
+
+              <div class="form-row full">
+                <div class="form-group">
+                  <label class="form-label" for="game_tag">Nombre Gaming o Game Tag<span class="req">*</span></label>
+                  <input type="text" id="game_tag" class="cyber-input" placeholder="Ej: @ShadowGamer / NeoStriker" required>
+                </div>
+              </div>
+            </div>
+
+            <!-- 2. Selección de Avatar Gaming (10 Opciones) -->
+            <div class="form-section">
+              <h4 class="form-section-title">2. Selecciona tu Icono / Avatar Gaming</h4>
+              <p class="form-label">Escoge el emblema que aparecerá en la tabla oficial de posiciones:</p>
+              <div class="avatar-selector-grid" id="avatar_grid">
+                <!-- Se pueblan los 10 avatares mediante js/avatars.js -->
+              </div>
+            </div>
+
+            <!-- 3. Selección de Juego y Nivel -->
+            <div class="form-section">
+              <h4 class="form-section-title">3. Juego en el que Participarás</h4>
+              <div class="game-select-cards">
+                <div class="game-radio-card" data-id="2" data-price="5" data-name="FIFA 2026">
+                  <span class="game-radio-title">FIFA 2026</span>
+                  <span class="game-radio-price">$5 USD</span>
+                </div>
+                <div class="game-radio-card" data-id="3" data-price="5" data-name="MORTAL KOMBAT">
+                  <span class="game-radio-title">MORTAL KOMBAT</span>
+                  <span class="game-radio-price">$5 USD</span>
+                </div>
+                <div class="game-radio-card combo selected" data-id="1" data-price="10" data-name="FIFA 2026 Y MORTAL COMBAT">
+                  <span class="combo-popular-badge">AMBOS JUEGOS</span>
+                  <span class="game-radio-title">DOBLE TORNEO</span>
+                  <span class="game-radio-price">$10 USD</span>
+                </div>
+              </div>
+
+              <!-- Selector de Nivel de Juego (1 al 10) -->
+              <div class="level-picker-box">
+                <div class="level-header">
+                  <label class="form-label" for="nivel_slider">¿Qué nivel de juego tienes? (1 al 10):</label>
+                  <span class="level-badge-display" id="nivel_badge">Nivel 7: Pro Gamer</span>
+                </div>
+                <input type="range" id="nivel_slider" class="cyber-slider" min="1" max="10" value="7">
+                <div class="level-ticks">
+                  <span>1 (Novato)</span>
+                  <span>5 (Intermedio)</span>
+                  <span>10 (Leyenda)</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- 4. Datos del Pago y Comprobante -->
+            <div class="form-section">
+              <h4 class="form-section-title">4. Comprobante de Pago</h4>
+              
+              <!-- Resumen dinámico del monto a transferir -->
+              <div class="payment-summary-box">
+                <span class="summary-usd">Monto: <strong id="modal_summary_usd">$10 USD</strong></span>
+                <span class="summary-bs">Monto a Transferir: <strong id="modal_summary_bs">Calculando Bs...</strong></span>
+              </div>
+
+              <div class="form-row">
+                <div class="form-group">
+                  <label class="form-label" for="banco_origen">Banco de Origen<span class="req">*</span></label>
+                  <select id="banco_origen" class="cyber-select" required>
+                    <!-- Poblado con los 30 bancos desde js/banks.js -->
+                  </select>
+                </div>
+
+                <div class="form-group">
+                  <label class="form-label" for="numero_pago">Número de Transferencia / Ref.<span class="req">*</span></label>
+                  <input type="text" id="numero_pago" class="cyber-input" placeholder="Ej: 12345678" required>
+                </div>
+              </div>
+
+              <div class="form-row full">
+                <div class="form-group">
+                  <label class="form-label" for="fecha_pago">Fecha del Pago<span class="req">*</span></label>
+                  <input type="date" id="fecha_pago" class="cyber-input" required>
+                </div>
+              </div>
+
+              <!-- Subida de Capture / Dropzone -->
+              <div class="form-group">
+                <label class="form-label">Adjuntar Capture del Pago (JPG, PNG, PDF)<span class="req">*</span></label>
+                
+                <div class="capture-dropzone" id="capture_dropzone">
+                  <input type="file" id="capture_file_input" accept="image/*,application/pdf" style="display: none;">
+                  <div class="dropzone-icon">📷</div>
+                  <div class="dropzone-text">Haz clic o arrastra aquí tu comprobante</div>
+                  <div class="dropzone-subtext">Formatos permitidos: JPG, PNG, WebP, PDF (Máx. 8MB)</div>
+                </div>
+
+                <div class="capture-preview-box" id="capture_preview_box">
+                  <img src="" alt="Capture Preview" class="preview-thumb" id="preview_thumb">
+                  <div class="preview-meta">
+                    <div class="preview-name" id="preview_filename">comprobante.jpg</div>
+                    <div class="preview-size" id="preview_filesize">250 KB</div>
+                  </div>
+                  <button type="button" class="btn-remove-capture" id="btn_remove_file" title="Eliminar archivo">&times;</button>
+                </div>
+              </div>
+
+            </div>
+
+          </form>
+        </div>
+
+        <!-- Pantalla de Éxito / Ticket tras Registro -->
+        <div class="modal-success-view" id="modal_success_view">
+          <div class="success-badge-icon">✓</div>
+          <h3 class="success-title">¡Inscripción Exitosa!</h3>
+          <p class="success-subtitle">¡Bienvenido a la Olimpiada de Gaming UPTPC!</p>
+          
+          <div class="success-ticket">
+            <div class="ticket-item">
+              <span class="ticket-label">Game Tag:</span>
+              <span class="ticket-val" id="ticket_gametag">-</span>
+            </div>
+            <div class="ticket-item">
+              <span class="ticket-label">Participante:</span>
+              <span class="ticket-val" id="ticket_nombre">-</span>
+            </div>
+            <div class="ticket-item">
+              <span class="ticket-label">Cédula:</span>
+              <span class="ticket-val" id="ticket_cedula">-</span>
+            </div>
+            <div class="ticket-item">
+              <span class="ticket-label">Juego:</span>
+              <span class="ticket-val" id="ticket_juego">-</span>
+            </div>
+            <div class="ticket-item">
+              <span class="ticket-label">Rango declarado:</span>
+              <span class="ticket-val" id="ticket_nivel">-</span>
+            </div>
+            <div class="ticket-item">
+              <span class="ticket-label">Referencia Pago:</span>
+              <span class="ticket-val" id="ticket_ref">-</span>
+            </div>
+          </div>
+
+          <button type="button" class="btn-cta-giant" id="btn_success_close" style="padding: 14px 40px; font-size: 1rem;">
+            Ver en la Lista de Jugadores
+          </button>
+        </div>
+
+      </div>
+
+      <!-- Pie del Modal con botones de acción -->
+      <div class="modal-footer">
+        <button type="button" class="btn-modal-cancel" id="btn_cancel_modal">Cancelar</button>
+        <button type="submit" form="form_inscripcion" class="btn-modal-submit" id="btn_submit_inscripcion">
+          <span class="spinner-loader" id="btn_submit_spinner"></span>
+          <span id="btn_submit_text">Confirmar e Inscribirse</span>
+        </button>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Scripts JavaScript -->
+  <script src="js/banks.js"></script>
+  <script src="js/avatars.js"></script>
+  <script src="js/api.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>
