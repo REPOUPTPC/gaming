@@ -55,14 +55,14 @@ Desarrollada para ser desplegada en **GitHub Pages** y conectada con **Google Sh
 
 ## ⚙️ Configuración del Backend en Google Apps Script
 
-El archivo [`google.gs`](./google.gs) contiene todo el código necesario para gestionar la base de datos en Google Sheets y almacenar los captures en Google Drive:
+El archivo google.gs contiene todo el código necesario para gestionar la base de datos en Google Sheets y almacenar los captures en Google Drive:
 
 1. Crea o abre tu hoja de cálculo en **Google Sheets** (ej: *"Olimpiada Gaming UPTPC - Base de Datos"*).
 2. En el menú superior de Sheets, ve a: **Extensiones > Apps Script**.
-3. Borra el código existente y pega todo el contenido de [`google.gs`](./google.gs).
+3. Borra el código existente y pega todo el contenido de google.gs.
 4. Verifica que la variable `DRIVE_FOLDER_ID` coincida con tu carpeta de Drive:
    ```javascript
-   var DRIVE_FOLDER_ID = '16GxMzEJW-FfQHY5REd8XP_nSFscSDbgF';
+
    ```
 5. En la barra superior de Apps Script, selecciona la función **`setupSheets`** y haz clic en **Ejecutar**. Esto creará automáticamente las hojas con sus encabezados:
    - `usuarios`: `id`, `icono`, `cedula`, `nombre`, `correo`, `telefono`, `game_tag`, `nivel`
@@ -74,7 +74,7 @@ El archivo [`google.gs`](./google.gs) contiene todo el código necesario para ge
    - **Ejecutar como**: *Yo (tu correo)*
    - **Quién tiene acceso**: *Cualquier usuario* (importante para permitir inscripciones públicas)
 7. Haz clic en **Implementar**, autoriza los permisos de Google Drive y Sheets, y copia la URL generada.
-8. Si la URL coincide con la actual (`https://script.google.com/macros/s/AKfycbwLvCsBNgKJC0TxP7owwUX-tOuLKhB9qkJTO06QOJ8uMacmnj3AnykXOIaMhwGiqSJ6/exec`), ya está todo enlazado en `js/api.js`.
+
 
 ---
 
