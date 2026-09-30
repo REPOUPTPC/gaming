@@ -805,7 +805,7 @@ body::after {
 
 .detail-value {
   font-family: var(--font-heading);
-  font-size: 1.15rem;
+  font-size: 0.8rem;
   color: #ffffff;
   font-weight: 700;
   word-break: break-all;
