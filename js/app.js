@@ -1113,8 +1113,9 @@ async function generateAuditPdfReport() {
   ]];
 
   const tableBody = filtered.map(row => {
-    const captureText = row.capture && row.capture.startsWith('http')
-      ? `Verificado en Drive\n(${row.capture.substring(0, 32)}...)`
+    const hasLink = row.capture && row.capture.startsWith('http');
+    const captureText = hasLink
+      ? 'Abrir Comprobante (Click aquí)'
       : (row.capture || 'Adjunto');
 
     return [
@@ -1169,7 +1170,7 @@ async function generateAuditPdfReport() {
       4: { halign: 'center', cellWidth: 28 },
       5: { cellWidth: 38 },
       6: { halign: 'center', cellWidth: 22 },
-      7: { cellWidth: 40, fontSize: 7 }
+      7: { halign: 'center', cellWidth: 40, fontSize: 7.5 }
     },
     didParseCell: function (data) {
       // Estilizar fila de TOTAL
@@ -1177,6 +1178,23 @@ async function generateAuditPdfReport() {
         data.cell.styles.fillColor = [226, 232, 240];
         data.cell.styles.fontStyle = 'bold';
         data.cell.styles.textColor = [15, 23, 42];
+      } else if (data.section === 'body' && data.column.index === 7) {
+        const rowData = filtered[data.row.index];
+        if (rowData && rowData.capture && rowData.capture.startsWith('http')) {
+          data.cell.styles.textColor = [2, 132, 199]; // Azul hipervínculo
+          data.cell.styles.fontStyle = 'bold';
+        }
+      }
+    },
+    didDrawCell: function (data) {
+      // Agregar hipervínculo interactivo real en el PDF hacia el link completo de Google Drive
+      if (data.section === 'body' && data.column.index === 7 && data.row.index < filtered.length) {
+        const rowData = filtered[data.row.index];
+        if (rowData && rowData.capture && rowData.capture.startsWith('http')) {
+          doc.link(data.cell.x, data.cell.y, data.cell.width, data.cell.height, {
+            url: rowData.capture
+          });
+        }
       }
     },
     margin: { left: 12, right: 12, bottom: 32 }
