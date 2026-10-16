@@ -8,6 +8,11 @@ document.addEventListener('DOMContentLoaded', () => {
   initApp();
 });
 
+// Credenciales oficiales de Acceso Controlado - Unidad de Ciencia y Tecnología
+const ADMIN_AUTH_USER = 'CIENCIA_TECNOLOGIA';
+const ADMIN_AUTH_PASS = 'CYT_01012023';
+const ADMIN_SESSION_KEY = 'uptpc_cyt_admin_session';
+
 // Estado de la aplicación
 const AppState = {
   selectedGame: { id: 1, name: 'FIFA 2026 Y MORTAL COMBAT', priceUsd: 10 },
@@ -16,10 +21,13 @@ const AppState = {
   selectedFile: null,
   isSubmitting: false,
   dolarRate: 859.06,
+  isAdminAuthenticated: false,
   roster: {
     fifa: [],
     mortal: []
-  }
+  },
+  auditPagos: [],
+  auditUsuarios: []
 };
 
 /**
@@ -34,11 +42,12 @@ async function initApp() {
   initFileUpload();
   initClipboardCopy();
   initRosterTabs();
+  initAdminDashboard();
   
   // Carga de tasa DolarAPI y cálculo de precios
   await loadExchangeRate();
 
-  // Carga de participantes en vivo
+  // Carga de participantes y pagos en vivo
   await loadParticipants();
 }
 
@@ -424,7 +433,11 @@ async function handleFormSubmit(e) {
     const base64Capture = await fileToBase64(AppState.selectedFile);
     const fileExt = AppState.selectedFile.name.split('.').pop() || 'jpg';
 
-    // 2. Armar payload
+    // 2. Armar payload (incluyendo monto_usd, monto_bs y tasa_bcv para auditoría)
+    const montoUsd = AppState.selectedGame.priceUsd || (AppState.selectedGame.id === 1 ? 10 : 5);
+    const tasaBcv = AppState.dolarRate || 859.06;
+    const montoBs = Number((montoUsd * tasaBcv).toFixed(2));
+
     const payload = {
       cedula: `${cedulaPrefix}-${cedulaNum}`,
       nombre: nombre,
@@ -438,6 +451,9 @@ async function handleFormSubmit(e) {
       banco_origen: bancoOrigen,
       numero_pago: numeroPago,
       fecha: fechaPago,
+      monto_usd: montoUsd,
+      monto_bs: montoBs,
+      tasa_bcv: tasaBcv,
       captureBase64: base64Capture,
       captureName: AppState.selectedFile.name,
       captureMime: AppState.selectedFile.type,
@@ -453,9 +469,38 @@ async function handleFormSubmit(e) {
       response = { status: 'success', message: 'Inscripción procesada' };
     }
 
-    // 4. Actualizar las listas en vivo localmente de inmediato
+    // 4. Actualizar las listas en vivo y registros de auditoría localmente de inmediato
+    const nextId = (AppState.auditPagos.length || 7) + 1;
+    const newUserId = ( response && response.id_usuario ) ? response.id_usuario : nextId;
+    const newPagoId = ( response && response.id_pago ) ? response.id_pago : nextId;
+    const captureUrl = ( response && response.capture_url ) ? response.capture_url : 'https://drive.google.com/drive/folders/16GxMzEJW-FfQHY5REd8XP_nSFscSDbgF';
+
+    const newAuditRecord = {
+      id: newPagoId,
+      id_juego: AppState.selectedGame.id,
+      juego_nombre: AppState.selectedGame.name,
+      id_usuario: newUserId,
+      usuario_nombre: nombre,
+      usuario_cedula: `${cedulaPrefix}-${cedulaNum}`,
+      usuario_correo: correo,
+      usuario_telefono: telefono,
+      usuario_gametag: gameTag,
+      numero_pago: numeroPago,
+      banco_origen: bancoOrigen,
+      fecha: fechaPago,
+      capture: captureUrl,
+      monto_usd: montoUsd,
+      monto_bs: montoBs,
+      tasa_bcv: tasaBcv
+    };
+
+    if (typeof saveLocalAuditRecord === 'function') {
+      saveLocalAuditRecord(newAuditRecord);
+    }
+    AppState.auditPagos.unshift(newAuditRecord);
+
     const newPlayer = {
-      id: Date.now(),
+      id: newUserId,
       icono: AppState.selectedAvatar,
       game_tag: gameTag,
       nombre: nombre,
@@ -471,6 +516,7 @@ async function handleFormSubmit(e) {
       AppState.roster.mortal.unshift(newPlayer);
     }
     renderRoster();
+    renderAuditDashboard();
 
     // 5. Mostrar vista de éxito con ticket
     showSuccessTicket({
@@ -578,7 +624,10 @@ async function loadParticipants() {
     if (data && data.fifa_players) {
       AppState.roster.fifa = data.fifa_players;
       AppState.roster.mortal = data.mortal_players || [];
+      AppState.auditPagos = data.pagos || [];
+      AppState.auditUsuarios = data.usuarios || [];
       renderRoster();
+      renderAuditDashboard();
     }
   } catch (e) {
     console.warn('Error cargando participantes en vivo:', e);
@@ -649,3 +698,529 @@ function escapeHtml(text) {
     .replace(/"/g, '&quot;')
     .replace(/'/g, '&#039;');
 }
+
+/**
+ * ============================================================================
+ * 11. ACCESO CONTROLADO (LOGIN CYT) Y DASHBOARD DE AUDITORÍA + REPORTE PDF
+ * ============================================================================
+ */
+function initAdminDashboard() {
+  const btnOpenAdmin = document.getElementById('btn_open_admin');
+  const modalLogin = document.getElementById('modal_login_admin');
+  const modalDash = document.getElementById('modal_dashboard_admin');
+
+  const btnCloseLogin = document.getElementById('btn_close_login');
+  const btnCancelLogin = document.getElementById('btn_cancel_login');
+  const formLogin = document.getElementById('form_admin_login');
+  const loginError = document.getElementById('login_error_msg');
+
+  const btnCloseDash = document.getElementById('btn_close_dashboard');
+  const btnLogout = document.getElementById('btn_logout_admin');
+  const btnRefresh = document.getElementById('btn_refresh_dashboard');
+  const btnExportPdf = document.getElementById('btn_export_pdf');
+
+  const filterJuego = document.getElementById('filter_juego');
+  const filterSearch = document.getElementById('filter_search');
+
+  // Verificar si ya inició sesión en esta pestaña
+  if (sessionStorage.getItem(ADMIN_SESSION_KEY) === 'true') {
+    AppState.isAdminAuthenticated = true;
+    if (btnOpenAdmin) {
+      btnOpenAdmin.innerHTML = '📊 Dashboard CYT';
+    }
+  }
+
+  const openLoginModal = () => {
+    if (loginError) loginError.style.display = 'none';
+    const userIn = document.getElementById('admin_user');
+    const passIn = document.getElementById('admin_pass');
+    if (userIn) userIn.value = '';
+    if (passIn) passIn.value = '';
+    if (modalLogin) {
+      modalLogin.classList.add('active');
+      document.body.style.overflow = 'hidden';
+      setTimeout(() => { if (userIn) userIn.focus(); }, 100);
+    }
+  };
+
+  const closeLoginModal = () => {
+    if (modalLogin) modalLogin.classList.remove('active');
+    document.body.style.overflow = '';
+  };
+
+  const openDashboardModal = () => {
+    renderAuditDashboard();
+    if (modalDash) {
+      modalDash.classList.add('active');
+      document.body.style.overflow = 'hidden';
+    }
+  };
+
+  const closeDashboardModal = () => {
+    if (modalDash) modalDash.classList.remove('active');
+    document.body.style.overflow = '';
+  };
+
+  if (btnOpenAdmin) {
+    btnOpenAdmin.addEventListener('click', () => {
+      if (AppState.isAdminAuthenticated) {
+        openDashboardModal();
+      } else {
+        openLoginModal();
+      }
+    });
+  }
+
+  if (btnCloseLogin) btnCloseLogin.addEventListener('click', closeLoginModal);
+  if (btnCancelLogin) btnCancelLogin.addEventListener('click', closeLoginModal);
+  if (btnCloseDash) btnCloseDash.addEventListener('click', closeDashboardModal);
+
+  if (modalLogin) {
+    modalLogin.addEventListener('click', (e) => {
+      if (e.target === modalLogin) closeLoginModal();
+    });
+  }
+
+  if (modalDash) {
+    modalDash.addEventListener('click', (e) => {
+      if (e.target === modalDash) closeDashboardModal();
+    });
+  }
+
+  if (formLogin) {
+    formLogin.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const userVal = document.getElementById('admin_user').value.trim();
+      const passVal = document.getElementById('admin_pass').value.trim();
+
+      if (userVal === ADMIN_AUTH_USER && passVal === ADMIN_AUTH_PASS) {
+        AppState.isAdminAuthenticated = true;
+        sessionStorage.setItem(ADMIN_SESSION_KEY, 'true');
+        if (btnOpenAdmin) btnOpenAdmin.innerHTML = '📊 Dashboard CYT';
+        closeLoginModal();
+        openDashboardModal();
+      } else {
+        if (loginError) loginError.style.display = 'block';
+      }
+    });
+  }
+
+  if (btnLogout) {
+    btnLogout.addEventListener('click', () => {
+      AppState.isAdminAuthenticated = false;
+      sessionStorage.removeItem(ADMIN_SESSION_KEY);
+      if (btnOpenAdmin) btnOpenAdmin.innerHTML = '🔐 Acceso CYT';
+      closeDashboardModal();
+    });
+  }
+
+  if (btnRefresh) {
+    btnRefresh.addEventListener('click', async () => {
+      const orig = btnRefresh.innerHTML;
+      btnRefresh.innerHTML = '⏳ Sincronizando...';
+      btnRefresh.disabled = true;
+      await loadExchangeRate();
+      await loadParticipants();
+      btnRefresh.innerHTML = orig;
+      btnRefresh.disabled = false;
+    });
+  }
+
+  if (filterJuego) {
+    filterJuego.addEventListener('change', renderAuditDashboard);
+  }
+  if (filterSearch) {
+    filterSearch.addEventListener('input', renderAuditDashboard);
+  }
+
+  if (btnExportPdf) {
+    btnExportPdf.addEventListener('click', generateAuditPdfReport);
+  }
+}
+
+/**
+ * Obtiene la lista de pagos enriquecida y filtrada según los controles del Dashboard
+ */
+function getFilteredAuditPagos() {
+  const filterJuegoEl = document.getElementById('filter_juego');
+  const filterSearchEl = document.getElementById('filter_search');
+
+  const selectedGameFilter = filterJuegoEl ? filterJuegoEl.value : 'ALL';
+  const searchQuery = filterSearchEl ? filterSearchEl.value.trim().toLowerCase() : '';
+
+  const tasaActual = AppState.dolarRate || 859.06;
+  const usuariosMap = {};
+  (AppState.auditUsuarios || []).forEach(u => {
+    usuariosMap[u.id] = u;
+  });
+
+  const juegosCatalog = {
+    1: { nombre: 'FIFA 2026 Y MORTAL COMBAT', valor: 10 },
+    2: { nombre: 'FIFA 2026', valor: 5 },
+    3: { nombre: 'MORTAL COMBAT', valor: 5 }
+  };
+
+  return (AppState.auditPagos || []).map(p => {
+    const idJuego = Number(p.id_juego) || 1;
+    const jInfo = juegosCatalog[idJuego] || juegosCatalog[1];
+    const uInfo = usuariosMap[p.id_usuario] || {};
+
+    const nombrePagador = p.usuario_nombre || uInfo.nombre || `Usuario #${p.id_usuario}`;
+    const cedulaPagador = p.usuario_cedula || uInfo.cedula || '-';
+    const gametagPagador = p.usuario_gametag || uInfo.game_tag || '-';
+    const telefonoPagador = p.usuario_telefono || uInfo.telefono || '-';
+
+    const montoUsd = p.monto_usd ? Number(p.monto_usd) : jInfo.valor;
+    const tasaUsada = p.tasa_bcv && Number(p.tasa_bcv) > 0 ? Number(p.tasa_bcv) : tasaActual;
+    const montoBs = p.monto_bs && Number(p.monto_bs) > 0 ? Number(p.monto_bs) : Number((montoUsd * tasaUsada).toFixed(2));
+
+    return {
+      id: p.id,
+      id_juego: idJuego,
+      juego_nombre: p.juego_nombre || jInfo.nombre,
+      id_usuario: p.id_usuario,
+      usuario_nombre: nombrePagador,
+      usuario_cedula: cedulaPagador,
+      usuario_gametag: gametagPagador,
+      usuario_telefono: telefonoPagador,
+      numero_pago: String(p.numero_pago || ''),
+      banco_origen: String(p.banco_origen || ''),
+      fecha: String(p.fecha || ''),
+      capture: String(p.capture || ''),
+      monto_usd: montoUsd,
+      monto_bs: montoBs,
+      tasa_bcv: tasaUsada
+    };
+  }).filter(item => {
+    if (selectedGameFilter !== 'ALL' && String(item.id_juego) !== selectedGameFilter) {
+      return false;
+    }
+    if (searchQuery) {
+      const haystack = `${item.id} ${item.id_usuario} ${item.usuario_nombre} ${item.usuario_cedula} ${item.usuario_gametag} ${item.juego_nombre} ${item.numero_pago} ${item.banco_origen} ${item.fecha}`.toLowerCase();
+      if (!haystack.includes(searchQuery)) return false;
+    }
+    return true;
+  });
+}
+
+/**
+ * Renderiza los KPIs y la tabla de pagos dentro del Dashboard de Ciencia y Tecnología
+ */
+function renderAuditDashboard() {
+  const tbody = document.getElementById('audit_table_body');
+  if (!tbody) return;
+
+  const filtered = getFilteredAuditPagos();
+
+  let totalUsd = 0;
+  let totalBs = 0;
+  let countCombo = 0;
+  let countFifa = 0;
+  let countMk = 0;
+
+  filtered.forEach(item => {
+    totalUsd += item.monto_usd;
+    totalBs += item.monto_bs;
+    if (item.id_juego === 1) countCombo++;
+    else if (item.id_juego === 2) countFifa++;
+    else if (item.id_juego === 3) countMk++;
+  });
+
+  // Actualizar KPIs
+  const elTotalPagos = document.getElementById('kpi_total_pagos');
+  const elDesglose = document.getElementById('kpi_desglose_juegos');
+  const elTotalUsd = document.getElementById('kpi_total_usd');
+  const elTotalBs = document.getElementById('kpi_total_bs');
+  const elTasaInfo = document.getElementById('kpi_tasa_info');
+
+  if (elTotalPagos) elTotalPagos.textContent = filtered.length;
+  if (elDesglose) elDesglose.textContent = `${countFifa} FIFA ($5) • ${countMk} MK ($5) • ${countCombo} Dúo ($10)`;
+  if (elTotalUsd) elTotalUsd.textContent = `$${totalUsd.toFixed(2)} USD`;
+  if (elTotalBs) elTotalBs.textContent = formatearBs(totalBs);
+  if (elTasaInfo) elTasaInfo.textContent = `Tasa BCV Ref: ${formatearBs(AppState.dolarRate)}`;
+
+  tbody.innerHTML = '';
+  if (filtered.length === 0) {
+    tbody.innerHTML = `
+      <tr>
+        <td colspan="8" style="text-align: center; padding: 30px; color: #94a3b8;">
+          No se encontraron registros de pago para los filtros seleccionados.
+        </td>
+      </tr>
+    `;
+    return;
+  }
+
+  filtered.forEach(row => {
+    const tr = document.createElement('tr');
+    const gameClass = row.id_juego === 1 ? 'g1' : (row.id_juego === 2 ? 'g2' : 'g3');
+    const captureHtml = row.capture && row.capture.startsWith('http')
+      ? `<a href="${escapeHtml(row.capture)}" target="_blank" rel="noopener noreferrer" class="btn-view-capture">🔗 Ver Capture</a>`
+      : `<span style="font-size:0.75rem; color:#94a3b8;">${escapeHtml(row.capture || 'Registrado')}</span>`;
+
+    tr.innerHTML = `
+      <td><span class="audit-id-badge">#${escapeHtml(row.id)}</span></td>
+      <td>
+        <div><strong>ID Juego: ${escapeHtml(row.id_juego)}</strong></div>
+        <span class="audit-game-pill ${gameClass}">${escapeHtml(row.juego_nombre)}</span>
+      </td>
+      <td>
+        <div class="audit-user-box">
+          <span class="audit-user-name">ID #${escapeHtml(row.id_usuario)} - ${escapeHtml(row.usuario_nombre)}</span>
+          <span class="audit-user-meta">CI: ${escapeHtml(row.usuario_cedula)} • Tag: ${escapeHtml(row.usuario_gametag)}</span>
+        </div>
+      </td>
+      <td>
+        <span class="audit-amount-usd">$${row.monto_usd.toFixed(2)} USD</span>
+        <span class="audit-amount-bs">${formatearBs(row.monto_bs)}</span>
+      </td>
+      <td><span class="audit-ref-code">${escapeHtml(row.numero_pago)}</span></td>
+      <td>${escapeHtml(row.banco_origen)}</td>
+      <td>${escapeHtml(row.fecha)}</td>
+      <td>${captureHtml}</td>
+    `;
+    tbody.appendChild(tr);
+  });
+}
+
+/**
+ * Carga una imagen local y la convierte en DataURL para incrustar el logo en el PDF
+ */
+function loadImageAsDataUrl(src) {
+  return new Promise((resolve) => {
+    const img = new Image();
+    img.crossOrigin = 'Anonymous';
+    img.onload = () => {
+      try {
+        const canvas = document.createElement('canvas');
+        canvas.width = img.width;
+        canvas.height = img.height;
+        const ctx = canvas.getContext('2d');
+        ctx.drawImage(img, 0, 0);
+        resolve(canvas.toDataURL('image/png'));
+      } catch (e) {
+        resolve(null);
+      }
+    };
+    img.onerror = () => resolve(null);
+    img.src = src;
+  });
+}
+
+/**
+ * Genera y descarga el Reporte PDF Oficial de Auditoría para Administración y Secretaría
+ */
+async function generateAuditPdfReport() {
+  if (!window.jspdf || !window.jspdf.jsPDF) {
+    alert('La librería generadora de PDF aún se está cargando. Por favor intenta de nuevo en unos segundos.');
+    return;
+  }
+
+  const filtered = getFilteredAuditPagos();
+  if (filtered.length === 0) {
+    alert('No hay registros de pago en la vista actual para exportar al PDF.');
+    return;
+  }
+
+  const destinoSelect = document.getElementById('pdf_destino_unidad');
+  const unidadDestino = destinoSelect ? destinoSelect.value : 'ADMINISTRACIÓN Y SECRETARÍA';
+
+  const { jsPDF } = window.jspdf;
+  // Orientación horizontal (landscape) para incluir todas las columnas de auditoría con claridad
+  const doc = new jsPDF({
+    orientation: 'landscape',
+    unit: 'mm',
+    format: 'a4'
+  });
+
+  // Cargar logos institucionales si están disponibles
+  const [logoUptpc, logoCyt] = await Promise.all([
+    loadImageAsDataUrl('img/LOGO_UPTPC.png'),
+    loadImageAsDataUrl('img/CYT.png')
+  ]);
+
+  // Encabezado Institucional Oscuro
+  doc.setFillColor(10, 17, 40);
+  doc.rect(0, 0, 297, 36, 'F');
+
+  if (logoCyt) {
+    try { doc.addImage(logoCyt, 'PNG', 12, 5, 24, 24); } catch (e) {}
+  }
+  if (logoUptpc) {
+    try { doc.addImage(logoUptpc, 'PNG', 260, 5, 24, 24); } catch (e) {}
+  }
+
+  doc.setTextColor(0, 243, 255);
+  doc.setFont('helvetica', 'bold');
+  doc.setFontSize(13);
+  doc.text('UNIVERSIDAD POLITÉCNICA TERRITORIAL DE PUERTO CABELLO (UPTPC)', 148.5, 11, { align: 'center' });
+
+  doc.setTextColor(255, 255, 255);
+  doc.setFontSize(11);
+  doc.text('UNIDAD DE CIENCIA Y TECNOLOGÍA - OLIMPIADA DE GAMING PS5 2026', 148.5, 18, { align: 'center' });
+
+  doc.setTextColor(250, 204, 21);
+  doc.setFontSize(9.5);
+  doc.text(`REPORTE DE AUDITORÍA Y CONTROL DE INGRESOS POR CONCEPTOS DE PAGO`, 148.5, 25, { align: 'center' });
+
+  doc.setTextColor(203, 213, 225);
+  doc.setFont('helvetica', 'normal');
+  doc.setFontSize(8.5);
+  const nowStr = new Date().toLocaleString('es-VE');
+  doc.text(`PARA: ${unidadDestino}   |   EMITIDO POR: USUARIO ${ADMIN_AUTH_USER}   |   FECHA EMISIÓN: ${nowStr}`, 148.5, 31.5, { align: 'center' });
+
+  // Cálculos de Totales para Cuadro de Auditoría
+  let totalUsd = 0;
+  let totalBs = 0;
+  let countCombo = 0;
+  let countFifa = 0;
+  let countMk = 0;
+
+  filtered.forEach(item => {
+    totalUsd += item.monto_usd;
+    totalBs += item.monto_bs;
+    if (item.id_juego === 1) countCombo++;
+    else if (item.id_juego === 2) countFifa++;
+    else if (item.id_juego === 3) countMk++;
+  });
+
+  // Cuadro Resumen Ejecutivo antes de la tabla
+  doc.setFillColor(241, 245, 249);
+  doc.setDrawColor(148, 163, 184);
+  doc.roundedRect(12, 40, 273, 16, 2, 2, 'FD');
+
+  doc.setTextColor(15, 23, 42);
+  doc.setFont('helvetica', 'bold');
+  doc.setFontSize(9);
+  doc.text(`TOTAL PAGOS AUDITADOS: ${filtered.length}`, 16, 46.5);
+  doc.text(`MODALIDADES: FIFA ($5): ${countFifa}  |  Mortal Kombat ($5): ${countMk}  |  Combo Dúo ($10): ${countCombo}`, 16, 52.5);
+
+  doc.text(`CUENTA RECEPTORA: Banco de Venezuela (01020317120000201359 - RIF G-20005608-8)`, 155, 46.5);
+  doc.setTextColor(4, 120, 87);
+  doc.text(`TOTAL INGRESOS RECAUDADOS: $${totalUsd.toFixed(2)} USD  (${formatearBs(totalBs)})`, 155, 52.5);
+
+  // Preparar filas de la tabla con las columnas requeridas:
+  // id | id_juego (y nombre juego) | id_usuario (Quien pagó y Cédula) | Monto Pagado ($ / Bs) | numero_pago | banco_origen | fecha | capture
+  const tableHeaders = [[
+    'id',
+    'id_juego\n(Juego / Modalidad)',
+    'id_usuario\n(Participante / Cédula)',
+    'Monto Pagado\n(USD / Bolívares)',
+    'numero_pago\n(Referencia)',
+    'banco_origen',
+    'fecha',
+    'capture\n(Comprobante)'
+  ]];
+
+  const tableBody = filtered.map(row => {
+    const captureText = row.capture && row.capture.startsWith('http')
+      ? `Verificado en Drive\n(${row.capture.substring(0, 32)}...)`
+      : (row.capture || 'Adjunto');
+
+    return [
+      String(row.id),
+      `ID: ${row.id_juego}\n${row.juego_nombre}`,
+      `ID: ${row.id_usuario} - ${row.usuario_nombre}\nCI: ${row.usuario_cedula} (${row.usuario_gametag})`,
+      `$${row.monto_usd.toFixed(2)} USD\n${formatearBs(row.monto_bs)}`,
+      String(row.numero_pago),
+      String(row.banco_origen),
+      String(row.fecha),
+      captureText
+    ];
+  });
+
+  // Fila de totalización al pie de la tabla
+  tableBody.push([
+    'TOTAL',
+    `${filtered.length} Inscritos`,
+    'CONSOLIDADO DE INGRESOS',
+    `$${totalUsd.toFixed(2)} USD\n${formatearBs(totalBs)}`,
+    '-',
+    '-',
+    '-',
+    'AUDITADO'
+  ]);
+
+  doc.autoTable({
+    startY: 60,
+    head: tableHeaders,
+    body: tableBody,
+    theme: 'grid',
+    styles: {
+      font: 'helvetica',
+      fontSize: 8,
+      cellPadding: 2.5,
+      valign: 'middle',
+      textColor: [15, 23, 42],
+      lineColor: [203, 213, 225],
+      lineWidth: 0.2
+    },
+    headStyles: {
+      fillColor: [15, 23, 42],
+      textColor: [0, 243, 255],
+      fontStyle: 'bold',
+      halign: 'center'
+    },
+    columnStyles: {
+      0: { halign: 'center', cellWidth: 14, fontStyle: 'bold' },
+      1: { cellWidth: 42 },
+      2: { cellWidth: 55 },
+      3: { halign: 'right', cellWidth: 34, fontStyle: 'bold' },
+      4: { halign: 'center', cellWidth: 28 },
+      5: { cellWidth: 38 },
+      6: { halign: 'center', cellWidth: 22 },
+      7: { cellWidth: 40, fontSize: 7 }
+    },
+    didParseCell: function (data) {
+      // Estilizar fila de TOTAL
+      if (data.row.index === tableBody.length - 1) {
+        data.cell.styles.fillColor = [226, 232, 240];
+        data.cell.styles.fontStyle = 'bold';
+        data.cell.styles.textColor = [15, 23, 42];
+      }
+    },
+    margin: { left: 12, right: 12, bottom: 32 }
+  });
+
+  // Sección de Firmas y Sellos para Entrega a Administración y Secretaría
+  let finalY = doc.lastAutoTable.finalY + 14;
+  if (finalY > 182) {
+    doc.addPage();
+    finalY = 30;
+  }
+
+  doc.setDrawColor(71, 85, 105);
+  doc.setLineWidth(0.4);
+
+  // Firma 1: Unidad de Ciencia y Tecnología
+  doc.line(25, finalY + 12, 95, finalY + 12);
+  doc.setFont('helvetica', 'bold');
+  doc.setFontSize(8.5);
+  doc.setTextColor(15, 23, 42);
+  doc.text('POR UNIDAD DE CIENCIA Y TECNOLOGÍA', 60, finalY + 17, { align: 'center' });
+  doc.setFont('helvetica', 'normal');
+  doc.setFontSize(7.5);
+  doc.text('Emitido y Validado por: CIENCIA_TECNOLOGIA', 60, finalY + 21, { align: 'center' });
+
+  // Firma 2: Unidad de Administración
+  doc.line(113, finalY + 12, 183, finalY + 12);
+  doc.setFont('helvetica', 'bold');
+  doc.setFontSize(8.5);
+  doc.text('RECIBIDO POR ADMINISTRACIÓN UPTPC', 148, finalY + 17, { align: 'center' });
+  doc.setFont('helvetica', 'normal');
+  doc.setFontSize(7.5);
+  doc.text('Control y Auditoría de Ingresos (Firma y Sello)', 148, finalY + 21, { align: 'center' });
+
+  // Firma 3: Secretaría General
+  doc.line(202, finalY + 12, 272, finalY + 12);
+  doc.setFont('helvetica', 'bold');
+  doc.setFontSize(8.5);
+  doc.text('RECIBIDO POR SECRETARÍA UPTPC', 237, finalY + 17, { align: 'center' });
+  doc.setFont('helvetica', 'normal');
+  doc.setFontSize(7.5);
+  doc.text('Control de Participantes e Ingresos (Firma y Sello)', 237, finalY + 21, { align: 'center' });
+
+  const dateStamp = new Date().toISOString().split('T')[0];
+  doc.save(`Reporte_Auditoria_Pagos_Olimpiada_Gaming_UPTPC_${dateStamp}.pdf`);
+}
+

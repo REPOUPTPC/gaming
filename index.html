@@ -46,6 +46,10 @@
           <span class="dolar-value" id="nav_dolar_value">Cargando...</span>
         </div>
 
+        <button class="btn-nav-admin" id="btn_open_admin" title="Acceso Controlado - Unidad de Ciencia y Tecnología">
+          🔐 Acceso CYT
+        </button>
+
         <button class="btn-nav-inscripcion" data-open-modal="inscripcion">
           ⚡ Inscribirse
         </button>
@@ -548,6 +552,167 @@
 
     </div>
   </div>
+
+  <!-- ========================================================================
+       MODAL DE LOGIN CONTROLADO (CIENCIA Y TECNOLOGÍA)
+       ======================================================================== -->
+  <div class="modal-overlay" id="modal_login_admin" role="dialog" aria-modal="true" aria-labelledby="login_modal_title">
+    <div class="modal-dialog login-dialog">
+      <div class="modal-header">
+        <div class="modal-title-group">
+          <span class="modal-icon">🔐</span>
+          <h3 class="modal-title" id="login_modal_title">Acceso Controlado <span>CYT UPTPC</span></h3>
+        </div>
+        <button class="btn-modal-close" id="btn_close_login" aria-label="Cerrar login">&times;</button>
+      </div>
+
+      <div class="modal-body">
+        <p class="login-subtitle">
+          Panel exclusivo para la <strong>Unidad de Ciencia y Tecnología</strong>, <strong>Administración</strong> y <strong>Secretaría</strong>.
+        </p>
+
+        <form id="form_admin_login" autocomplete="off">
+          <div class="form-group" style="margin-bottom: 16px;">
+            <label class="form-label" for="admin_user">Usuario Institucional<span class="req">*</span></label>
+            <input type="text" id="admin_user" class="cyber-input" placeholder="Ej: CIENCIA_TECNOLOGIA" required>
+          </div>
+
+          <div class="form-group" style="margin-bottom: 12px;">
+            <label class="form-label" for="admin_pass">Clave de Acceso<span class="req">*</span></label>
+            <input type="password" id="admin_pass" class="cyber-input" placeholder="••••••••••••" required>
+          </div>
+
+          <div class="login-error-msg" id="login_error_msg">
+            ⚠️ Usuario o clave incorrectos. Verifique sus credenciales de Ciencia y Tecnología.
+          </div>
+
+          <div class="login-actions">
+            <button type="button" class="btn-modal-cancel" id="btn_cancel_login">Cancelar</button>
+            <button type="submit" class="btn-modal-submit">
+              Ingresar al Dashboard
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- ========================================================================
+       DASHBOARD DE AUDITORÍA Y CONTROL DE INGRESOS (CIENCIA Y TECNOLOGÍA)
+       ======================================================================== -->
+  <div class="modal-overlay" id="modal_dashboard_admin" role="dialog" aria-modal="true" aria-labelledby="dashboard_modal_title">
+    <div class="modal-dialog dashboard-dialog">
+      <!-- Header del Dashboard -->
+      <div class="modal-header dashboard-header">
+        <div class="modal-title-group">
+          <img src="img/CYT.png" alt="CYT" class="dashboard-header-logo">
+          <div>
+            <h3 class="modal-title" id="dashboard_modal_title">Dashboard de Control y Auditoría <span>CYT UPTPC</span></h3>
+            <span class="dashboard-subtitle-badge">Sesión activa: CIENCIA_TECNOLOGIA • Reportes para Administración y Secretaría</span>
+          </div>
+        </div>
+        <div class="dashboard-header-actions">
+          <button type="button" class="btn-dash-refresh" id="btn_refresh_dashboard" title="Sincronizar con Google Sheets">
+            🔄 Sincronizar Datos
+          </button>
+          <button type="button" class="btn-dash-logout" id="btn_logout_admin" title="Cerrar sesión controlada">
+            🚪 Cerrar Sesión
+          </button>
+          <button class="btn-modal-close" id="btn_close_dashboard" aria-label="Cerrar dashboard">&times;</button>
+        </div>
+      </div>
+
+      <!-- Cuerpo del Dashboard -->
+      <div class="modal-body dashboard-body">
+        
+        <!-- Tarjetas KPI de Resumen Financiero y Participación -->
+        <div class="dash-kpi-grid">
+          <div class="dash-kpi-card cyan">
+            <span class="kpi-label">Total Pagos Registrados</span>
+            <strong class="kpi-value" id="kpi_total_pagos">0</strong>
+            <span class="kpi-sub" id="kpi_desglose_juegos">0 FIFA • 0 MK • 0 Dúo</span>
+          </div>
+          <div class="dash-kpi-card gold">
+            <span class="kpi-label">Total Recaudado (USD)</span>
+            <strong class="kpi-value" id="kpi_total_usd">$0.00 USD</strong>
+            <span class="kpi-sub">Según arancel por modalidad</span>
+          </div>
+          <div class="dash-kpi-card green">
+            <span class="kpi-label">Total Recaudado (Bolívares)</span>
+            <strong class="kpi-value" id="kpi_total_bs">0,00 Bs.</strong>
+            <span class="kpi-sub" id="kpi_tasa_info">Calculado a tasa BCV</span>
+          </div>
+          <div class="dash-kpi-card pink">
+            <span class="kpi-label">Unidad Receptora / Auditoría</span>
+            <strong class="kpi-value kpi-unit-text">UPTPC</strong>
+            <span class="kpi-sub">Ciencia y Tecnología • Admón. • Secretaría</span>
+          </div>
+        </div>
+
+        <!-- Barra de Herramientas: Filtros y Generación de Reportes PDF -->
+        <div class="dash-toolbar">
+          <div class="dash-filters">
+            <div class="filter-item">
+              <label for="filter_juego">Filtrar por Juego (id_juego):</label>
+              <select id="filter_juego" class="cyber-select">
+                <option value="ALL">Todos los Juegos (1, 2 y 3)</option>
+                <option value="1">ID 1 - FIFA 2026 Y MORTAL COMBAT ($10)</option>
+                <option value="2">ID 2 - FIFA 2026 ($5)</option>
+                <option value="3">ID 3 - MORTAL COMBAT ($5)</option>
+              </select>
+            </div>
+
+            <div class="filter-item">
+              <label for="filter_search">Buscar Pagador / Cédula / Ref / Banco:</label>
+              <input type="text" id="filter_search" class="cyber-input" placeholder="Ej: V-28451920, Carlos, 84920145, Banesco...">
+            </div>
+
+            <div class="filter-item">
+              <label for="pdf_destino_unidad">Dirigido a Unidad (en el PDF):</label>
+              <select id="pdf_destino_unidad" class="cyber-select">
+                <option value="ADMINISTRACIÓN Y SECRETARÍA">Administración y Secretaría (Conjunto)</option>
+                <option value="UNIDAD DE ADMINISTRACIÓN">Unidad de Administración</option>
+                <option value="SECRETARÍA GENERAL">Secretaría General</option>
+                <option value="UNIDAD DE CIENCIA Y TECNOLOGÍA">Archivo Interno Ciencia y Tecnología</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="dash-export-actions">
+            <button type="button" class="btn-generate-pdf" id="btn_export_pdf">
+              📄 Descargar Reporte PDF Oficial (Auditoría)
+            </button>
+          </div>
+        </div>
+
+        <!-- Tabla Oficial de Pagos (Columnas exactas solicitadas + Participante y Monto) -->
+        <div class="dash-table-wrapper">
+          <table class="dash-audit-table" id="audit_pagos_table">
+            <thead>
+              <tr>
+                <th>id</th>
+                <th>id_juego (Juego)</th>
+                <th>id_usuario (Pagador)</th>
+                <th>Monto Pagado ($ / Bs)</th>
+                <th>numero_pago</th>
+                <th>banco_origen</th>
+                <th>fecha</th>
+                <th>capture</th>
+              </tr>
+            </thead>
+            <tbody id="audit_table_body">
+              <!-- Poblado dinámicamente -->
+            </tbody>
+          </table>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- Librerías para Generación de PDF Oficial (jsPDF + AutoTable) -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.8.2/jspdf.plugin.autotable.min.js"></script>
 
   <!-- Scripts JavaScript -->
   <script src="js/banks.js"></script>

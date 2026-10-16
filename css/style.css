@@ -241,6 +241,33 @@ body::after {
   box-shadow: 0 0 25px var(--neon-cyan);
 }
 
+.btn-nav-admin {
+  padding: 8px 16px;
+  background: rgba(188, 19, 254, 0.16);
+  color: #e9d5ff;
+  border: 1px solid rgba(188, 19, 254, 0.55);
+  border-radius: 30px;
+  font-family: var(--font-heading);
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.8px;
+  cursor: pointer;
+  box-shadow: 0 0 12px rgba(188, 19, 254, 0.25);
+  transition: var(--transition);
+  text-transform: uppercase;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.btn-nav-admin:hover {
+  background: var(--neon-purple);
+  color: #ffffff;
+  border-color: #ffffff;
+  box-shadow: 0 0 20px rgba(188, 19, 254, 0.75);
+  transform: translateY(-1px);
+}
+
 /* ==========================================================================
    HERO SECTION
    ========================================================================== */

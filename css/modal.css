@@ -761,3 +761,368 @@
     justify-content: center;
   }
 }
+
+/* ==========================================================================
+   MODAL DE LOGIN CONTROLADO (CIENCIA Y TECNOLOGÍA)
+   ========================================================================== */
+
+.login-dialog {
+  max-width: 440px;
+  border-color: rgba(188, 19, 254, 0.5);
+  box-shadow: 0 0 45px rgba(188, 19, 254, 0.25), 0 20px 40px rgba(0, 0, 0, 0.85);
+}
+
+.login-dialog::before {
+  background: linear-gradient(90deg, var(--neon-purple), var(--neon-cyan), var(--neon-pink));
+}
+
+.login-subtitle {
+  font-family: var(--font-subheading);
+  font-size: 0.9rem;
+  color: var(--text-secondary);
+  margin-bottom: 20px;
+  line-height: 1.45;
+}
+
+.login-subtitle strong {
+  color: var(--neon-cyan);
+}
+
+.login-error-msg {
+  display: none;
+  background: rgba(255, 0, 127, 0.14);
+  border: 1px solid var(--neon-pink);
+  color: #ff99cc;
+  padding: 10px 14px;
+  border-radius: var(--radius-sm);
+  font-family: var(--font-subheading);
+  font-size: 0.85rem;
+  margin-bottom: 16px;
+}
+
+.login-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-top: 20px;
+}
+
+/* ==========================================================================
+   DASHBOARD DE AUDITORÍA Y CONTROL DE INGRESOS (CYT UPTPC)
+   ========================================================================== */
+
+.dashboard-dialog {
+  max-width: 1180px;
+  width: 96%;
+  max-height: 92vh;
+  border-color: rgba(0, 243, 255, 0.5);
+}
+
+.dashboard-header {
+  flex-wrap: wrap;
+  gap: 14px;
+}
+
+.dashboard-header-logo {
+  height: 42px;
+  width: auto;
+  border-radius: 6px;
+  background: rgba(255, 255, 255, 0.05);
+  padding: 3px;
+  border: 1px solid rgba(0, 243, 255, 0.35);
+}
+
+.dashboard-subtitle-badge {
+  display: block;
+  font-family: var(--font-subheading);
+  font-size: 0.78rem;
+  color: #38bdf8;
+  margin-top: 2px;
+}
+
+.dashboard-header-actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.btn-dash-refresh,
+.btn-dash-logout {
+  padding: 8px 14px;
+  border-radius: 20px;
+  font-family: var(--font-subheading);
+  font-size: 0.82rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: var(--transition);
+}
+
+.btn-dash-refresh {
+  background: rgba(0, 243, 255, 0.12);
+  border: 1px solid rgba(0, 243, 255, 0.45);
+  color: var(--neon-cyan);
+}
+
+.btn-dash-refresh:hover {
+  background: var(--neon-cyan);
+  color: #050814;
+}
+
+.btn-dash-logout {
+  background: rgba(255, 0, 127, 0.12);
+  border: 1px solid rgba(255, 0, 127, 0.45);
+  color: #ff80bf;
+}
+
+.btn-dash-logout:hover {
+  background: var(--neon-pink);
+  color: #ffffff;
+}
+
+/* KPI Grid */
+.dash-kpi-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 16px;
+  margin-bottom: 22px;
+}
+
+.dash-kpi-card {
+  background: rgba(5, 10, 26, 0.85);
+  border-radius: var(--radius-md);
+  padding: 16px 18px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.dash-kpi-card.cyan { border-left: 4px solid var(--neon-cyan); }
+.dash-kpi-card.gold { border-left: 4px solid var(--neon-gold); }
+.dash-kpi-card.green { border-left: 4px solid #10b981; }
+.dash-kpi-card.pink { border-left: 4px solid var(--neon-pink); }
+
+.kpi-label {
+  font-family: var(--font-subheading);
+  font-size: 0.78rem;
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+  color: var(--text-secondary);
+}
+
+.kpi-value {
+  font-family: var(--font-heading);
+  font-size: 1.45rem;
+  font-weight: 900;
+  color: #ffffff;
+}
+
+.dash-kpi-card.cyan .kpi-value { color: var(--neon-cyan); }
+.dash-kpi-card.gold .kpi-value { color: var(--neon-gold); }
+.dash-kpi-card.green .kpi-value { color: #34d399; }
+.dash-kpi-card.pink .kpi-value { color: #ff80bf; font-size: 1.2rem; }
+
+.kpi-sub {
+  font-family: var(--font-subheading);
+  font-size: 0.76rem;
+  color: var(--text-muted);
+}
+
+/* Barra de filtros y botón PDF */
+.dash-toolbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  gap: 16px;
+  flex-wrap: wrap;
+  background: rgba(5, 10, 24, 0.65);
+  border: 1px solid rgba(0, 243, 255, 0.2);
+  border-radius: var(--radius-md);
+  padding: 16px;
+  margin-bottom: 20px;
+}
+
+.dash-filters {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 14px;
+  flex: 1;
+}
+
+.filter-item {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.filter-item label {
+  font-family: var(--font-subheading);
+  font-size: 0.78rem;
+  color: var(--text-secondary);
+  font-weight: 600;
+}
+
+.btn-generate-pdf {
+  padding: 13px 24px;
+  background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+  color: #ffffff;
+  border: 1px solid #34d399;
+  border-radius: var(--radius-sm);
+  font-family: var(--font-heading);
+  font-size: 0.88rem;
+  font-weight: 800;
+  letter-spacing: 0.8px;
+  text-transform: uppercase;
+  cursor: pointer;
+  box-shadow: 0 0 20px rgba(16, 185, 129, 0.4);
+  transition: var(--transition);
+  white-space: nowrap;
+}
+
+.btn-generate-pdf:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 0 28px rgba(16, 185, 129, 0.75);
+  background: linear-gradient(135deg, #34d399 0%, #059669 100%);
+}
+
+/* Tabla de Auditoría */
+.dash-table-wrapper {
+  width: 100%;
+  overflow-x: auto;
+  border: 1px solid rgba(0, 243, 255, 0.25);
+  border-radius: var(--radius-md);
+  background: rgba(4, 8, 20, 0.85);
+}
+
+.dash-audit-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-family: var(--font-subheading);
+  font-size: 0.88rem;
+  text-align: left;
+}
+
+.dash-audit-table thead tr {
+  background: rgba(0, 243, 255, 0.12);
+  border-bottom: 2px solid rgba(0, 243, 255, 0.4);
+}
+
+.dash-audit-table th {
+  padding: 13px 12px;
+  font-family: var(--font-heading);
+  font-size: 0.76rem;
+  color: var(--neon-cyan);
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+  white-space: nowrap;
+}
+
+.dash-audit-table td {
+  padding: 12px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.07);
+  color: #e2e8f0;
+  vertical-align: middle;
+}
+
+.dash-audit-table tbody tr:hover {
+  background: rgba(0, 243, 255, 0.06);
+}
+
+.audit-id-badge {
+  display: inline-block;
+  padding: 2px 8px;
+  background: rgba(255, 255, 255, 0.08);
+  border-radius: 6px;
+  font-family: var(--font-heading);
+  font-size: 0.78rem;
+  color: var(--neon-cyan);
+  font-weight: 700;
+}
+
+.audit-game-pill {
+  display: inline-block;
+  padding: 3px 9px;
+  border-radius: 12px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  margin-top: 3px;
+}
+
+.audit-game-pill.g1 {
+  background: rgba(250, 204, 21, 0.15);
+  color: var(--neon-gold);
+  border: 1px solid rgba(250, 204, 21, 0.4);
+}
+
+.audit-game-pill.g2 {
+  background: rgba(0, 243, 255, 0.15);
+  color: var(--neon-cyan);
+  border: 1px solid rgba(0, 243, 255, 0.4);
+}
+
+.audit-game-pill.g3 {
+  background: rgba(255, 0, 127, 0.15);
+  color: #ff80bf;
+  border: 1px solid rgba(255, 0, 127, 0.4);
+}
+
+.audit-user-box {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.audit-user-name {
+  font-weight: 700;
+  color: #ffffff;
+}
+
+.audit-user-meta {
+  font-size: 0.76rem;
+  color: var(--text-secondary);
+}
+
+.audit-amount-usd {
+  font-family: var(--font-heading);
+  font-weight: 800;
+  color: var(--neon-gold);
+  display: block;
+}
+
+.audit-amount-bs {
+  font-size: 0.78rem;
+  color: #34d399;
+  font-weight: 600;
+}
+
+.audit-ref-code {
+  font-family: var(--font-heading);
+  font-size: 0.82rem;
+  color: #ffffff;
+  background: rgba(0, 243, 255, 0.1);
+  padding: 3px 8px;
+  border-radius: 4px;
+  border: 1px solid rgba(0, 243, 255, 0.25);
+}
+
+.btn-view-capture {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 5px 10px;
+  background: rgba(0, 243, 255, 0.12);
+  border: 1px solid rgba(0, 243, 255, 0.35);
+  color: var(--neon-cyan);
+  border-radius: 6px;
+  font-size: 0.76rem;
+  font-weight: 700;
+  text-decoration: none;
+  transition: var(--transition);
+}
+
+.btn-view-capture:hover {
+  background: var(--neon-cyan);
+  color: #050814;
+}
+
