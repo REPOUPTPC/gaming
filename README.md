@@ -19,7 +19,8 @@ Desarrollada para ser desplegada en **GitHub Pages** y conectada con **Google Sh
   - Catálogo interactivo de **10 avatares gaming** en SVG
   - Selector de nivel de juego del **1 al 10** con rango gamer
   - Selector con los **30 bancos de Venezuela**
-  - Número de transferencia, fecha y comprobante (capture) con drag & drop y vista previa
+  - Número de transferencia, teléfono WhatsApp de contacto del pago, fecha y comprobante (capture) con drag & drop y vista previa
+- **Comunidad Oficial en WhatsApp**: Botón interactivo con pulso en vivo para unirse al grupo oficial de WhatsApp (`chat.whatsapp.com`) con notificaciones, fixture y anuncios en tiempo real.
 - **Listas en Vivo en el Index**: Muestra a los jugadores registrados en *FIFA 2026* y *Mortal Kombat*. Si un participante se inscribe en ambos juegos, se refleja automáticamente en ambas listas.
 - **Datos de Transferencia Bancaria**:
   - **Beneficiario**: Universidad Politécnica Territorial de Puerto Cabello
@@ -64,13 +65,15 @@ El archivo google.gs contiene todo el código necesario para gestionar la base d
    ```javascript
 
    ```
-5. En la barra superior de Apps Script, selecciona la función **`setupSheets`** y haz clic en **Ejecutar**. Esto creará automáticamente las hojas con sus encabezados:
-   - `usuarios`: `id`, `icono`, `cedula`, `nombre`, `correo`, `telefono`, `game_tag`, `nivel`
-   - `pagos`: `id`, `id_juego`, `id_usuario`, `numero_pago`, `banco_origen`, `fecha`, `capture`
-   - `juegos`: `id`, `nombre`, `valor`
+5. En la barra superior de Apps Script, selecciona la función a ejecutar:
+   - **`setupSheets`** (si estás creando las tablas desde cero): Crea las hojas con sus encabezados oficiales:
+     - `usuarios`: `id`, `icono`, `cedula`, `nombre`, `correo`, `telefono`, `game_tag`, `nivel`
+     - `pagos`: `id`, `id_juego`, `id_usuario`, `telefono_pago`, `numero_pago`, `banco_origen`, `fecha`, `capture`
+     - `juegos`: `id`, `nombre`, `valor`
+   - **`actualizarCamposAdicionales`** (si ya tenías tablas con datos anteriores): Agrega de forma segura la columna `telefono_pago` y migra automáticamente los teléfonos de los registros existentes sin perder ningún dato.
 6. Haz clic en el botón azul **Implementar > Nueva implementación**:
    - **Tipo**: Aplicación web
-   - **Descripción**: *API Olimpiada Gaming UPTPC*
+   - **Descripción**: *API Olimpiada Gaming UPTPC (con Teléfono WhatsApp de Pago)*
    - **Ejecutar como**: *Yo (tu correo)*
    - **Quién tiene acceso**: *Cualquier usuario* (importante para permitir inscripciones públicas)
 7. Haz clic en **Implementar**, autoriza los permisos de Google Drive y Sheets, y copia la URL generada.

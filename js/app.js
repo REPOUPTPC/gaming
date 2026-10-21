@@ -259,6 +259,21 @@ function initModalEvents() {
   if (form) {
     form.addEventListener('submit', handleFormSubmit);
   }
+
+  // Sincronización automática de teléfono WhatsApp del participante al campo de pago
+  const telContacto = document.getElementById('telefono_contacto');
+  const telPago = document.getElementById('telefono_pago');
+  if (telContacto && telPago) {
+    telPago.addEventListener('input', () => {
+      telPago.dataset.manual = 'true';
+    });
+
+    telContacto.addEventListener('input', () => {
+      if (telPago.dataset.manual !== 'true' || !telPago.value) {
+        telPago.value = telContacto.value;
+      }
+    });
+  }
 }
 
 /**
@@ -274,6 +289,12 @@ function resetFormState() {
 
   // Limpiar archivo seleccionado
   removeFile();
+
+  // Reset flag de edición manual de teléfono de pago
+  const telPago = document.getElementById('telefono_pago');
+  if (telPago) {
+    telPago.dataset.manual = 'false';
+  }
 
   // Fecha por defecto hoy
   const fechaInput = document.getElementById('fecha_pago');
@@ -401,6 +422,8 @@ async function handleFormSubmit(e) {
   const bancoOrigen = document.getElementById('banco_origen').value;
   const numeroPago = document.getElementById('numero_pago').value.trim();
   const fechaPago = document.getElementById('fecha_pago').value;
+  const telPagoInput = document.getElementById('telefono_pago');
+  const telefonoPago = telPagoInput ? telPagoInput.value.trim() : telefono;
 
   // Validaciones
   if (!cedulaNum || !nombre || !correo || !telefono || !gameTag) {
@@ -408,8 +431,8 @@ async function handleFormSubmit(e) {
     return;
   }
 
-  if (!bancoOrigen || !numeroPago || !fechaPago) {
-    alert('Por favor completa todos los datos del pago bancario.');
+  if (!bancoOrigen || !numeroPago || !fechaPago || !telefonoPago) {
+    alert('Por favor completa todos los datos del pago bancario (incluyendo el teléfono WhatsApp de contacto).');
     return;
   }
 
@@ -443,6 +466,7 @@ async function handleFormSubmit(e) {
       nombre: nombre,
       correo: correo,
       telefono: telefono,
+      telefono_pago: telefonoPago,
       game_tag: gameTag,
       id_juego: AppState.selectedGame.id,
       juego_nombre: AppState.selectedGame.name,
@@ -525,7 +549,8 @@ async function handleFormSubmit(e) {
       cedula: `${cedulaPrefix}-${cedulaNum}`,
       juego: AppState.selectedGame.name,
       nivel: AppState.selectedLevel,
-      referencia: numeroPago
+      referencia: numeroPago,
+      whatsapp: telefonoPago
     });
 
   } catch (error) {
@@ -558,6 +583,11 @@ function showSuccessTicket(data) {
     document.getElementById('ticket_juego').textContent = data.juego;
     document.getElementById('ticket_nivel').textContent = `Nivel ${data.nivel}`;
     document.getElementById('ticket_ref').textContent = data.referencia;
+    
+    const ticketWhatsapp = document.getElementById('ticket_whatsapp');
+    if (ticketWhatsapp) {
+      ticketWhatsapp.textContent = data.whatsapp || '-';
+    }
   }
 }
 

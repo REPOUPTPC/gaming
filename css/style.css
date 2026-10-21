@@ -353,6 +353,187 @@ body::after {
   margin-top: 6px;
 }
 
+/* ==========================================================================
+   BOTÓN / TARJETA DEL GRUPO DE WHATSAPP (HERO)
+   ========================================================================== */
+
+.hero-whatsapp-container {
+  display: flex;
+  justify-content: center;
+  margin: 20px auto 28px;
+  max-width: 820px;
+  padding: 0 12px;
+}
+
+.hero-whatsapp-card {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  width: 100%;
+  padding: 14px 22px;
+  background: linear-gradient(135deg, rgba(16, 185, 129, 0.15) 0%, rgba(5, 15, 30, 0.94) 50%, rgba(0, 243, 255, 0.1) 100%);
+  border: 1px solid rgba(16, 185, 129, 0.5);
+  border-radius: var(--radius-md);
+  text-decoration: none;
+  color: #ffffff;
+  box-shadow: 0 0 25px rgba(16, 185, 129, 0.22), inset 0 0 15px rgba(16, 185, 129, 0.08);
+  transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  position: relative;
+  overflow: hidden;
+  backdrop-filter: blur(8px);
+}
+
+.hero-whatsapp-card::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(37, 211, 102, 0.25), transparent);
+  transition: 0.6s;
+  pointer-events: none;
+}
+
+.hero-whatsapp-card:hover {
+  transform: translateY(-3px) scale(1.01);
+  border-color: #25D366;
+  box-shadow: 0 0 35px rgba(37, 211, 102, 0.5), 0 8px 25px rgba(0, 0, 0, 0.6);
+}
+
+.hero-whatsapp-card:hover::before {
+  left: 100%;
+}
+
+.whatsapp-card-left {
+  position: relative;
+  flex-shrink: 0;
+}
+
+.whatsapp-icon-circle {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #25D366 0%, #128C7E 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #ffffff;
+  box-shadow: 0 0 16px rgba(37, 211, 102, 0.6);
+  transition: transform 0.3s ease;
+}
+
+.hero-whatsapp-card:hover .whatsapp-icon-circle {
+  transform: scale(1.1) rotate(6deg);
+}
+
+.whatsapp-svg {
+  width: 26px;
+  height: 26px;
+}
+
+.whatsapp-live-pulse {
+  position: absolute;
+  top: -2px;
+  right: -2px;
+  width: 12px;
+  height: 12px;
+  background-color: #00ff88;
+  border: 2px solid #030814;
+  border-radius: 50%;
+  box-shadow: 0 0 10px #00ff88;
+  animation: pulse-green 1.5s infinite;
+}
+
+.whatsapp-card-content {
+  flex-grow: 1;
+  text-align: left;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.whatsapp-card-tag {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.live-status-badge {
+  font-family: var(--font-heading);
+  font-size: 0.72rem;
+  font-weight: 800;
+  color: #25D366;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+}
+
+.whatsapp-card-headline {
+  font-family: var(--font-heading);
+  font-size: clamp(0.95rem, 1.8vw, 1.15rem);
+  font-weight: 800;
+  color: #ffffff;
+  letter-spacing: 0.5px;
+  transition: color 0.2s ease;
+}
+
+.hero-whatsapp-card:hover .whatsapp-card-headline {
+  color: #00f3ff;
+}
+
+.whatsapp-card-subline {
+  font-family: var(--font-subheading);
+  font-size: clamp(0.8rem, 1.4vw, 0.9rem);
+  color: #94a3b8;
+  line-height: 1.3;
+}
+
+.whatsapp-card-action {
+  flex-shrink: 0;
+}
+
+.btn-join-whatsapp {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 18px;
+  background: #25D366;
+  color: #030814;
+  border-radius: 25px;
+  font-family: var(--font-heading);
+  font-size: 0.85rem;
+  font-weight: 800;
+  letter-spacing: 1px;
+  box-shadow: 0 0 15px rgba(37, 211, 102, 0.4);
+  transition: all 0.2s ease;
+}
+
+.hero-whatsapp-card:hover .btn-join-whatsapp {
+  background: #ffffff;
+  color: #030814;
+  box-shadow: 0 0 20px rgba(255, 255, 255, 0.8);
+  transform: translateX(3px);
+}
+
+@media (max-width: 680px) {
+  .hero-whatsapp-card {
+    flex-direction: column;
+    text-align: center;
+    padding: 16px 14px;
+    gap: 12px;
+  }
+  
+  .whatsapp-card-content {
+    text-align: center;
+    align-items: center;
+  }
+  
+  .btn-join-whatsapp {
+    width: 100%;
+    justify-content: center;
+  }
+}
+
 .hero-tagline {
   font-family: var(--font-subheading);
   font-size: clamp(1.1rem, 2.2vw, 1.4rem);

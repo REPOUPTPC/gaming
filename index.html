@@ -78,6 +78,35 @@
         <span class="title-subline">GAMING UPTPC!</span>
       </h1>
 
+      <!-- Opción de Acceso Inmediato al Grupo Oficial de WhatsApp -->
+      <div class="hero-whatsapp-container">
+        <a href="https://chat.whatsapp.com/KkFcWpGiQjS6Pi93Pr3eSu" target="_blank" rel="noopener noreferrer" class="hero-whatsapp-card" title="Unirse al grupo oficial de WhatsApp de la Olimpiada Gaming UPTPC">
+          <div class="whatsapp-card-left">
+            <span class="whatsapp-live-pulse" aria-hidden="true"></span>
+            <div class="whatsapp-icon-circle">
+              <svg viewBox="0 0 24 24" class="whatsapp-svg" fill="currentColor">
+                <path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91C2.13 13.66 2.59 15.36 3.45 16.86L2.05 22L7.3 20.62C8.75 21.41 10.38 21.83 12.04 21.83C17.5 21.83 21.95 17.38 21.95 11.92C21.95 9.27 20.92 6.78 19.05 4.91C17.18 3.03 14.69 2 12.04 2M12.05 3.67C14.25 3.67 16.31 4.53 17.87 6.09C19.42 7.65 20.28 9.72 20.28 11.92C20.28 16.46 16.58 20.15 12.04 20.15C10.56 20.15 9.11 19.76 7.85 19L7.55 18.83L4.43 19.65L5.26 16.61L5.06 16.29C4.24 14.99 3.81 13.47 3.81 11.91C3.81 7.37 7.5 3.67 12.05 3.67M9.53 7.34C9.33 7.34 9.09 7.41 8.88 7.64C8.68 7.87 8.1 8.41 8.1 9.51C8.1 10.61 8.9 11.67 9.01 11.82C9.13 11.97 10.58 14.21 12.8 15.17C14.65 15.97 15.02 15.81 15.43 15.77C15.84 15.73 16.76 15.22 16.95 14.68C17.14 14.14 17.14 13.68 17.08 13.58C17.02 13.48 16.86 13.42 16.61 13.3C16.36 13.18 15.14 12.58 14.91 12.5C14.68 12.42 14.52 12.38 14.36 12.62C14.2 12.86 13.73 13.42 13.59 13.58C13.45 13.74 13.31 13.76 13.06 13.64C12.81 13.52 12.01 13.26 11.07 12.42C10.33 11.76 9.84 10.94 9.7 10.7C9.56 10.46 9.68 10.33 9.81 10.21C9.92 10.1 10.06 9.92 10.18 9.78C10.3 9.64 10.34 9.54 10.42 9.38C10.5 9.22 10.46 9.08 10.4 8.96C10.34 8.84 9.87 7.69 9.68 7.21C9.49 6.75 9.3 6.81 9.15 6.81C9.02 6.81 8.88 6.81 8.74 6.81L9.53 7.34Z"/>
+              </svg>
+            </div>
+          </div>
+          <div class="whatsapp-card-content">
+            <div class="whatsapp-card-tag">
+              <span class="live-status-badge">COMUNIDAD OFICIAL • EN VIVO</span>
+            </div>
+            <strong class="whatsapp-card-headline">¡Únete al Grupo Oficial de WhatsApp!</strong>
+            <span class="whatsapp-card-subline">Información en tiempo real, cronogramas, emparejamientos y anuncios oficiales</span>
+          </div>
+          <div class="whatsapp-card-action">
+            <span class="btn-join-whatsapp">
+              <span>UNIRME</span>
+              <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor">
+                <path d="M5 13h11.86l-5.43 5.43 1.42 1.42L21.14 12l-8.29-8.29-1.42 1.42L16.86 11H5v2z"/>
+              </svg>
+            </span>
+          </div>
+        </a>
+      </div>
+
       <p class="hero-tagline">
         ¡Ven a competir en <strong>FIFA 2026</strong> y demuestra tu habilidad en <strong>MORTAL KOMBAT</strong>! 
         El torneo universitario gaming más grande de Puerto Cabello.
@@ -468,7 +497,12 @@
                 </div>
               </div>
 
-              <div class="form-row full">
+              <div class="form-row">
+                <div class="form-group">
+                  <label class="form-label" for="telefono_pago">Teléfono WhatsApp de Contacto (Pago)<span class="req">*</span></label>
+                  <input type="tel" id="telefono_pago" class="cyber-input" placeholder="Ej: 0414-1234567" required>
+                </div>
+
                 <div class="form-group">
                   <label class="form-label" for="fecha_pago">Fecha del Pago<span class="req">*</span></label>
                   <input type="date" id="fecha_pago" class="cyber-input" required>
@@ -531,6 +565,10 @@
             <div class="ticket-item">
               <span class="ticket-label">Referencia Pago:</span>
               <span class="ticket-val" id="ticket_ref">-</span>
+            </div>
+            <div class="ticket-item">
+              <span class="ticket-label">WhatsApp Contacto:</span>
+              <span class="ticket-val" id="ticket_whatsapp">-</span>
             </div>
           </div>
 
